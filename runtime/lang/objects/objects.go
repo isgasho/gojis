@@ -107,24 +107,97 @@ func Construct(f, newTarget *lang.Object, args ...lang.Value) (*lang.Object, err
 	return f.Construct(newTarget, args...)
 }
 
-func SetIntegrityLevel() {
-	panic("TODO")
+const (
+	IntegrityLevelSealed = "sealed"
+	IntegrityLevelFrozen = "frozen"
+)
+
+func SetIntegrityLevel(o *lang.Object, level string) (lang.Boolean, errors.Error) {
+	status := o.PreventExtensions()
+	if !status {
+		return lang.False, nil
+	}
+
+	keys := o.OwnPropertyKeys()
+	if level == IntegrityLevelSealed {
+		return setIntegrityLevelSealed(o, keys)
+	}
+	if level == IntegrityLevelFrozen {
+		return setIntegrityLevelFrozen(o, keys)
+	}
+
+	panic(fmt.Errorf("Unknown integrity level '%v'", level))
 }
 
-func TestIntegrityLevel() {
-	panic("TODO")
+func setIntegrityLevelSealed(o *lang.Object, keys []lang.StringOrSymbol) (lang.Boolean, errors.Error) {
+	for _, k := range keys {
+		p := lang.NewProperty()
+		p.SetField(lang.FieldNameConfigurable, lang.False)
+		_, err := DefinePropertyOrThrow(o, k, p)
+		if err != nil {
+			return lang.False, err
+		}
+	}
+	return lang.True, nil
+}
+
+func setIntegrityLevelFrozen(o *lang.Object, keys []lang.StringOrSymbol) (lang.Boolean, errors.Error) {
+	for _, k := range keys {
+		p := o.GetOwnProperty(k)
+		if p != nil {
+			desc := lang.NewProperty()
+			if p.IsAccessorDescriptor() {
+				desc.SetField(lang.FieldNameConfigurable, lang.False)
+			} else {
+				desc.SetField(lang.FieldNameConfigurable, lang.False)
+				desc.SetField(lang.FieldNameWritable, lang.False)
+			}
+			_, err := DefinePropertyOrThrow(o, k, desc)
+			if err != nil {
+				return lang.False, err
+			}
+		}
+	}
+	return lang.True, nil
+}
+
+func TestIntegrityLevel(o *lang.Object, level string) lang.Boolean {
+	if o.IsExtensible() {
+		return lang.False
+	}
+
+	keys := o.OwnPropertyKeys()
+	for _, k := range keys {
+		desc := o.GetOwnProperty(k)
+		if desc != nil {
+			if desc.Configurable() {
+				return lang.False
+			}
+			if level == IntegrityLevelFrozen && desc.IsDataDescriptor() {
+				if desc.Writable() {
+					return false
+				}
+			}
+		}
+	}
+	return true
 }
 
 func CreateArrayFromList() {
-	panic("TODO")
+	panic("TODO: Arrays")
 }
 
 func CreateListFromArrayLike() {
-	panic("TODO")
+	panic("TODO: Arrays")
 }
 
-func Invoke() {
-	panic("TODO")
+func Invoke(v lang.Value, p lang.StringOrSymbol, args ...lang.Value) (lang.Value, errors.Error) {
+	if args == nil {
+		args = []lang.Value{}
+	}
+
+	f := GetV(v, p)
+	return Call(f.(*lang.Object), v, args...)
 }
 
 func OrdinaryHasInstance() {
