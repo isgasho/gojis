@@ -41,7 +41,7 @@ func InternalIsCallable(arg lang.Value) bool {
 		return false
 	}
 
-	if fObj, ok := arg.(*lang.FunctionObject); ok {
+	if fObj, ok := arg.(*lang.Object); ok {
 		return fObj.Call != nil
 	}
 	return false
@@ -54,7 +54,7 @@ func InternalIsConstructor(arg lang.Value) bool {
 		return false
 	}
 
-	if cObj, ok := arg.(*lang.ConstructorFunctionObject); ok {
+	if cObj, ok := arg.(*lang.Object); ok {
 		return cObj.Construct != nil
 	}
 	return false

@@ -1,6 +1,10 @@
 package lang
 
-import "fmt"
+import (
+	"fmt"
+
+	"gitlab.com/gojis/vm/runtime/errors"
+)
 
 var _ Value = (*Object)(nil)
 
@@ -10,23 +14,19 @@ type Object struct {
 
 	prototype  *Object
 	extensible bool
+
+	// Function Object
+
+	Call func(Value, ...Value) (Value, errors.Error)
+
+	// Constructor Function Object
+
+	Construct func(*Object, ...Value) (*Object, errors.Error)
 }
 
 func (o *Object) Type() Type { return TypeObject }
 
 func (o *Object) Value() interface{} { return o }
-
-type FunctionObject struct {
-	*Object
-
-	Call func(...Value) Value
-}
-
-type ConstructorFunctionObject struct {
-	*FunctionObject
-
-	Construct func(*Object, ...Value) *Object
-}
 
 /* -- 6.1.7.2, Table 5, essential internal methods -- */
 
@@ -73,6 +73,10 @@ func (o *Object) DefineOwnProperty(key StringOrSymbol, val *Property) Boolean {
 func (o *Object) HasProperty(key StringOrSymbol) Boolean {
 	_, ok := o.fields[key]
 	return Boolean(ok)
+}
+
+func (o *Object) HasOwnProperty(key StringOrSymbol) Boolean {
+	panic("TODO")
 }
 
 func (o *Object) Get(key StringOrSymbol, receiver Value) Value {
