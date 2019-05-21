@@ -1,8 +1,11 @@
-package vm
+package lang
 
+var _ Value = (*Boolean)(nil)
+
+// Available Boolean values
 var (
-	True  Value = Boolean(true)
-	False Value = Boolean(false)
+	True  = Boolean(true)
+	False = Boolean(false)
 )
 
 type Boolean bool

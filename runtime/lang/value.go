@@ -1,4 +1,4 @@
-package vm
+package lang
 
 type Value interface {
 	Type() Type

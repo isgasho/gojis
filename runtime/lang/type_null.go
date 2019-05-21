@@ -1,4 +1,6 @@
-package vm
+package lang
+
+var _ Value = (*valueNull)(nil)
 
 var (
 	Null Value = &valueNull{}

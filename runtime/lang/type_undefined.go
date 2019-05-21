@@ -1,4 +1,6 @@
-package vm
+package lang
+
+var _ Value = (*valueUndefined)(nil)
 
 var (
 	Undefined Value = &valueUndefined{}
@@ -6,5 +8,5 @@ var (
 
 type valueUndefined struct{}
 
-func (valueUndefined) Value() interface{} { return "undefined" }
+func (valueUndefined) Value() interface{} { return Undefined }
 func (valueUndefined) Type() Type         { return TypeUndefined }
