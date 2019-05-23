@@ -1,0 +1,15 @@
+# We can specify a default match using wildcards:
+* @TimSatke
+
+# Multiple codeowners can be specified, separated by whitespace
+CODEOWNERS @TimSatke
+
+# Both usernames or email addresses can be used to match
+# users. Everything else will be ignored. For example this will
+# specify `@legal` and a user with email `janedoe@gitlab.com` as the
+# owner for the LICENSE file
+LICENSE.md @TimSatke
+go.mod     @TimSatke
+
+/docs/    @TimSatke
+/runtime/ @TimSatke
