@@ -68,7 +68,7 @@ func (e *GlobalEnvironment) CreateGlobalVarBinding(n lang.String, deletable bool
 
 	hasProperty := objects.HasOwnProperty(globalObj, lang.NewStringOrSymbol(n))
 	extensible := cmp.InternalIsExtensible(globalObj)
-	if !hasProperty && extensible {
+	if !hasProperty.Value().(bool) && extensible {
 		e.ObjectRecord.CreateMutableBinding(n, deletable)
 		e.ObjectRecord.InitializeBinding(n, lang.Undefined)
 	}
