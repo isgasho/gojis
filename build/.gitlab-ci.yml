@@ -2,3 +2,92 @@ image: golang:latest
 
 include:
   template: License-Management.gitlab-ci.yml
+
+variables:
+  BIN_NAME: vm
+  ARTIFACTS_DIR: gojis
+
+stages:
+  - test
+  - analysis
+  - build
+  - deploy
+
+before_script:
+  - cd ${CI_PROJECT_DIR}
+  - mkdir -p ${ARTIFACTS_DIR}
+
+test:
+  stage: test
+  retry: 2
+  script:
+    - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+  artifacts:
+    paths:
+      - coverage.txt
+
+# sonarcloud-scan:
+#   stage: analysis
+#   image: docker:stable
+#   allow_failure: true
+#   services:
+#     - docker:stable-dind
+#   dependencies:
+#     - test
+#   script:
+#     >-
+#       docker run \
+#         -v $(pwd):/root/src \
+#         -v $(pwd)/test/sonar-scanner.properties:/root/sonar-scanner/conf/sonar-scanner.properties \
+#         newtmitch/sonar-scanner sonar-scanner \
+#         -Dsonar.branch.name=${CI_COMMIT_REF_SLUG} \
+#         -Dsonar.login=${SONARCLOUD_LOGIN}
+
+analysis:
+  stage: analysis
+  image: docker:stable
+  variables:
+    DOCKER_DRIVER: overlay2
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
+    - docker run
+        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
+        --volume "$PWD:/code"
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
+  only:
+    - master
+    - develop
+    - schedules
+  artifacts:
+    reports:
+      sast: gl-sast-report.json
+
+# build:
+#   stage: build
+#   retry: 2
+#   script:
+#     - go build -o ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/${BIN_NAME} ./cmd
+#   artifacts:
+#     paths:
+#       - ${ARTIFACTS_DIR}
+
+# build-all:
+#   stage: build
+#   retry: 2
+#   only:
+#     - tags
+#     - master
+#   script:
+#     >
+#       for GOOS in darwin linux windows; do
+#         for GOARCH in 386 amd64; do
+#           go build -v -a -installsuffix cgo -o ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/${BIN_NAME}-${GOOS}-${GOARCH} -ldflags "-extldflags '-static'" ./cmd
+#         done
+#       done
+#   artifacts:
+#     paths:
+#       - ${ARTIFACTS_DIR}
