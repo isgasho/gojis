@@ -42,21 +42,21 @@ func BenchmarkNewDataProperty(b *testing.B) {
 	_ = p
 }
 
-func BenchmarkIsAccessorDescriptor(b *testing.B) {
+func BenchmarkPropertyIsAccessorDescriptor(b *testing.B) {
 	p := NewDataProperty(Null, False, False, False)
 	for i := 0; i < b.N; i++ {
 		_ = p.IsAccessorDescriptor()
 	}
 }
 
-func BenchmarkIsDataDescriptor(b *testing.B) {
+func BenchmarkPropertyIsDataDescriptor(b *testing.B) {
 	p := NewDataProperty(Null, False, False, False)
 	for i := 0; i < b.N; i++ {
 		_ = p.IsDataDescriptor()
 	}
 }
 
-func BenchmarkIsGenericDescriptor(b *testing.B) {
+func BenchmarkPropertyIsGenericDescriptor(b *testing.B) {
 	p := NewDataProperty(Null, False, False, False)
 	for i := 0; i < b.N; i++ {
 		_ = p.IsGenericDescriptor()
