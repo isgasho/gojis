@@ -1,3 +1,3 @@
 [logo]: assets/logo.png
 
-![Gojis Gopher][logo]
+![Gojis Gopher][logo]{: .center}
