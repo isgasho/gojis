@@ -1,1 +1,3 @@
-![Gojis Gopher](https://storage.googleapis.com/gopherizeme.appspot.com/gophers/7d5e68e7e62d800beb9063c452143d2604e37130.png =200x200)
+[logo]: assets/logo.png
+
+![Gojis Gopher][logo]
