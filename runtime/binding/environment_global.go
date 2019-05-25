@@ -5,8 +5,6 @@ import (
 
 	"gitlab.com/gojis/vm/runtime/errors"
 	"gitlab.com/gojis/vm/runtime/lang"
-	"gitlab.com/gojis/vm/runtime/lang/cmp"
-	"gitlab.com/gojis/vm/runtime/lang/objects"
 )
 
 var _ Environment = (*GlobalEnvironment)(nil)
@@ -52,11 +50,11 @@ func (e *GlobalEnvironment) HasRestrictedGlobalProperty(n lang.String) bool {
 func (e *GlobalEnvironment) CanDeclareGlobalVar(n lang.String) bool {
 	globalObj := e.ObjectRecord.bindingObject
 
-	if objects.HasOwnProperty(globalObj, lang.NewStringOrSymbol(n)) {
+	if lang.HasOwnProperty(globalObj, lang.NewStringOrSymbol(n)) {
 		return true
 	}
 
-	return cmp.InternalIsExtensible(globalObj)
+	return lang.InternalIsExtensible(globalObj)
 }
 
 func (e *GlobalEnvironment) CanDeclareGlobalFunction(n lang.String) {
@@ -66,8 +64,8 @@ func (e *GlobalEnvironment) CanDeclareGlobalFunction(n lang.String) {
 func (e *GlobalEnvironment) CreateGlobalVarBinding(n lang.String, deletable bool) {
 	globalObj := e.ObjectRecord.bindingObject
 
-	hasProperty := objects.HasOwnProperty(globalObj, lang.NewStringOrSymbol(n))
-	extensible := cmp.InternalIsExtensible(globalObj)
+	hasProperty := lang.HasOwnProperty(globalObj, lang.NewStringOrSymbol(n))
+	extensible := lang.InternalIsExtensible(globalObj)
 	if !hasProperty.Value().(bool) && extensible {
 		e.ObjectRecord.CreateMutableBinding(n, deletable)
 		e.ObjectRecord.InitializeBinding(n, lang.Undefined)
@@ -133,7 +131,7 @@ func (e *GlobalEnvironment) DeleteBinding(n lang.String) bool {
 		return e.DeclarativeRecord.DeleteBinding(n)
 	}
 
-	if objects.HasOwnProperty(e.ObjectRecord.bindingObject, lang.NewStringOrSymbol(n)) {
+	if lang.HasOwnProperty(e.ObjectRecord.bindingObject, lang.NewStringOrSymbol(n)) {
 		status := e.ObjectRecord.DeleteBinding(n)
 		if status {
 			nVal := n.Value().(string)
