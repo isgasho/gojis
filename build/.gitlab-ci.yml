@@ -1,7 +1,9 @@
 image: golang:latest
 
 include:
-  template: License-Management.gitlab-ci.yml
+  template:
+    - License-Management.gitlab-ci.yml
+    - SAST.gitlab-ci.yml
 
 variables:
   BIN_NAME: vm
@@ -17,7 +19,25 @@ before_script:
   - cd ${CI_PROJECT_DIR}
   - mkdir -p ${ARTIFACTS_DIR}
 
-test:
+###########
+## TESTS ##
+###########
+
+.test_template: &test_definition
+  stage: test
+  retry: 2
+  script:
+    - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+
+test:1.12:
+  image: golang:1.12
+  <<: *test_definition
+
+test:1.11:
+  image: golang:1.11
+  <<: *test_definition
+
+test:latest:
   stage: test
   retry: 2
   script:
@@ -42,29 +62,6 @@ test:
 #         newtmitch/sonar-scanner sonar-scanner \
 #         -Dsonar.branch.name=${CI_COMMIT_REF_SLUG} \
 #         -Dsonar.login=${SONARCLOUD_LOGIN}
-
-analysis:
-  stage: analysis
-  image: docker:stable
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  services:
-    - docker:stable-dind
-  script:
-    - export SP_VERSION=$(echo "$CI_SERVER_VERSION" | sed 's/^\([0-9]*\)\.\([0-9]*\).*/\1-\2-stable/')
-    - docker run
-        --env SAST_CONFIDENCE_LEVEL="${SAST_CONFIDENCE_LEVEL:-3}"
-        --volume "$PWD:/code"
-        --volume /var/run/docker.sock:/var/run/docker.sock
-        "registry.gitlab.com/gitlab-org/security-products/sast:$SP_VERSION" /app/bin/run /code
-  only:
-    - master
-    - develop
-    - schedules
-  artifacts:
-    reports:
-      sast: gl-sast-report.json
 
 # build:
 #   stage: build
