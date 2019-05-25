@@ -1,0 +1,4 @@
+image: golang:latest
+
+include:
+  template: License-Management.gitlab-ci.yml
