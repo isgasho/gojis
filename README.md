@@ -1,3 +1,5 @@
-[logo]: assets/logo.png
+# Gojis
 
-![Gojis Gopher](assets/logo.png){: .text-center}
+Gojis is an ECMAScript 2018 implementation.
+
+This README is WIP.
