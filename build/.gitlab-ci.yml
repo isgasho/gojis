@@ -27,9 +27,9 @@ before_script:
   script:
     - out='results.txt'
     - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./... | tee $out
-    - runs=$(grep -c 'RUN' $out)
-    - passed=$(grep -c 'PASS' $out)
-    - fails=$(grep -c 'FAIL' $out)
+    - runs=$(grep -c 'RUN' "$out")
+    - passed=$(grep -c 'PASS' "$out")
+    - fails=$(grep -c 'FAIL' "$out")
     - echo "$runs tests run, $passed passed, $fails failed"
 
 test:1.12:
