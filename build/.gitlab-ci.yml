@@ -41,10 +41,10 @@ test:1.11:
   <<: *test_definition
 
 test:latest:
+  image: golang:latest
   stage: test
   retry: 2
-  script:
-    - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+  <<: *test_definition
   artifacts:
     paths:
       - coverage.txt
