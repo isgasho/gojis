@@ -25,7 +25,12 @@ before_script:
   stage: test
   retry: 2
   script:
-    - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+    - out='results.txt'
+    - go test -v -race -coverprofile=coverage.txt -covermode=atomic ./... | tee $out
+    - runs=$(grep -c 'RUN' $out)
+    - passed=$(grep -c 'PASS' $out)
+    - fails=$(grep -c 'FAIL' $out)
+    - echo "Tests run: $runs, passed: $passed, failed: $fails"
 
 test:1.12:
   image: golang:1.12
