@@ -2,6 +2,7 @@ package lang
 
 import (
 	"fmt"
+	"math"
 
 	"gitlab.com/gojis/vm/runtime/errors"
 )
@@ -116,8 +117,26 @@ func ToNumber(arg Value) (Number, errors.Error) {
 	panic(unhandledType(arg))
 }
 
-func ToInteger(arg Value) Number {
-	panic("TODO")
+func ToInteger(arg Value) (Number, errors.Error) {
+	number, err := ToNumber(arg)
+	if err != nil {
+		return Zero, err
+	}
+
+	if number == NaN {
+		return PosZero, nil
+	}
+
+	val := arg.Value()
+
+	if val == PosZero.Value() ||
+		val == NegZero.Value() ||
+		arg == PosInfinity ||
+		arg == NegInfinity {
+		return arg.(Number), nil
+	}
+
+	return NewNumber(math.Floor(val.(float64))), nil
 }
 
 func ToInt32(arg Value) Number {

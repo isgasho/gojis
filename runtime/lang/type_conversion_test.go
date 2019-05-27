@@ -39,7 +39,7 @@ func TestToBooleanUnhandledType(t *testing.T) {
 
 func TestToIntegerUnhandledType(t *testing.T) {
 	defer requirePanic(t)
-	_ = ToInteger(&unknownType{})
+	_, _ = ToInteger(&unknownType{})
 }
 
 func TestToInt32UnhandledType(t *testing.T) {
@@ -178,4 +178,19 @@ func TestToNumberFuzzy(t *testing.T) {
 		return val
 	}
 	require.NoError(quick.CheckEqual(conv, NewNumber, nil))
+}
+
+func TestToIntegerFuzzy(t *testing.T) {
+	require := require.New(t)
+
+	conv := func(x float64) Number {
+		n := NewNumber(x)
+		val, err := ToInteger(n)
+		require.NoError(err)
+		return val
+	}
+	expected := func(x float64) Number {
+		return NewNumber(math.Floor(x))
+	}
+	require.NoError(quick.CheckEqual(conv, expected, nil))
 }

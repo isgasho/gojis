@@ -66,3 +66,11 @@ func (n Number) Value() interface{} {
 
 // Type returns lang.TypeNumber.
 func (Number) Type() Type { return TypeNumber }
+
+func (n Number) String() string {
+	if n.isNaN {
+		return "NaN"
+	}
+
+	return n.value.String()
+}
