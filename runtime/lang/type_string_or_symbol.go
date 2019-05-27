@@ -16,7 +16,7 @@ type StringOrSymbol struct {
 // String or Symbol.
 // This function will panic if the passed Value is not a String or a Symbol.
 func NewStringOrSymbol(arg Value) StringOrSymbol {
-	if arg.Type() != TypeString || arg.Type() != TypeSymbol {
+	if arg.Type() != TypeString && arg.Type() != TypeSymbol {
 		panic("Type of argument must be String or Symbol")
 	}
 

@@ -72,9 +72,9 @@ func ToBoolean(arg Value) Boolean {
 	case TypeBoolean:
 		return arg.(Boolean)
 	case TypeNumber:
-		if val := arg.Value(); val == PosZero ||
-			val == NegZero ||
-			val == NaN {
+		if val := arg.Value(); val == PosZero.Value() ||
+			val == NegZero.Value() ||
+			arg == NaN {
 			return False
 		}
 		return True
@@ -104,7 +104,7 @@ func ToNumber(arg Value) (Number, errors.Error) {
 	case TypeString:
 		panic("TODO: 7.1.3.1")
 	case TypeSymbol:
-		return Zero, errors.NewTypeError("Cannot convert frmo Symbol to Number")
+		return Zero, errors.NewTypeError("Cannot convert from Symbol to Number")
 	case TypeObject:
 		primValue, err := ToPrimitive(arg, TypeNumber)
 		if err != nil {
