@@ -30,7 +30,7 @@ before_script:
     - runs=$(grep -c 'RUN' $out)
     - passed=$(grep -c 'PASS' $out)
     - fails=$(grep -c 'FAIL' $out)
-    - echo "Tests run: $runs, passed: $passed, failed: $fails"
+    - echo "$runs tests run, $passed passed, $fails failed"
 
 test:1.12:
   image: golang:1.12
