@@ -9,7 +9,7 @@ var _ Value = (*Number)(nil) // ensure that Number implements Value
 
 var (
 	// NaN as specified by the language spec.
-	NaN Value = NewNumber(math.NaN())
+	NaN = NewNumber(math.NaN())
 	// PosInfinity as specified by the language spec.
 	PosInfinity = NewNumber(math.Inf(+1))
 	// NegInfinity as specified by the language spec.

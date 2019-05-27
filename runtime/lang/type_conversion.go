@@ -85,11 +85,35 @@ func ToBoolean(arg Value) Boolean {
 		return True
 	}
 
-	panic(fmt.Errorf("Unhandled type in conversion ToBoolean, type '%v'", arg.Type()))
+	panic(unhandledType(arg))
 }
 
-func ToNumber(arg Value) Number {
-	panic("TODO")
+func ToNumber(arg Value) (Number, errors.Error) {
+	switch arg.Type() {
+	case TypeUndefined:
+		return NaN, nil
+	case TypeNull:
+		return PosZero, nil
+	case TypeBoolean:
+		if arg.(Boolean) {
+			return NewNumber(1), nil
+		}
+		return PosZero, nil
+	case TypeNumber:
+		return arg.(Number), nil
+	case TypeString:
+		panic("TODO: 7.1.3.1")
+	case TypeSymbol:
+		return Zero, errors.NewTypeError("Cannot convert frmo Symbol to Number")
+	case TypeObject:
+		primValue, err := ToPrimitive(arg, TypeNumber)
+		if err != nil {
+			return Zero, err
+		}
+		return ToNumber(primValue)
+	}
+
+	panic(unhandledType(arg))
 }
 
 func ToInteger(arg Value) Number {
@@ -173,4 +197,8 @@ func OrdinaryToPrimitive(o *Object, hint string) (Value, errors.Error) {
 	}
 
 	return nil, errors.NewTypeError("Cannot convert ordinary object to primitive")
+}
+
+func unhandledType(arg Value) error {
+	return fmt.Errorf("Unhandled type in type conversion: '%v'", arg.Type())
 }
