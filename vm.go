@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"gitlab.com/gojis/vm/runtime"
 )
@@ -11,8 +12,8 @@ import (
 func Run() {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("VM crashed: %v\n", err)
-			os.Exit(1)
+			fmt.Printf("VM crashed: %v [recovered]\n", err)
+			panic(err)
 		}
 	}()
 
@@ -26,12 +27,20 @@ func Run() {
 var rootCmd = &cobra.Command{
 	Use:   "gojis",
 	Short: "Evaluates a set of .js files.",
-	Run: func(_ *cobra.Command, args []string) {
-		root(args...)
+	RunE: func(c *cobra.Command, args []string) error {
+		return root(args...)
 	},
 }
 
-func root(args ...string) {
-	r := runtime.New()
-	r.SaySomething()
+func root(args ...string) error {
+	logLevel := zerolog.InfoLevel
+	if verbose {
+		logLevel = zerolog.DebugLevel
+	}
+
+	r := runtime.New(
+		runtime.LogLevel(logLevel),
+	)
+
+	return r.Start()
 }

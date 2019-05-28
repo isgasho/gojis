@@ -12,21 +12,19 @@ type Runtime struct {
 
 type RuntimeOption func(*Runtime)
 
-func Trace() RuntimeOption {
+func LogLevel(l zerolog.Level) RuntimeOption {
 	return func(r *Runtime) {
-		r.log.UpdateContext(func(c zerolog.Context) zerolog.Context {
-			return c.Caller().Stack()
-		})
+		r.log = r.log.Level(l)
 	}
 }
 
 func New(opts ...RuntimeOption) *Runtime {
 	r := new(Runtime)
-	r.log = zerolog.New(os.Stdout).
-		With().
+
+	r.log = zerolog.New(os.Stdout).With().
 		Timestamp().
-		Str("component", "runtime").
-		Logger()
+		Logger().
+		Level(zerolog.InfoLevel)
 
 	for _, opt := range opts {
 		opt(r)
@@ -35,6 +33,6 @@ func New(opts ...RuntimeOption) *Runtime {
 	return r
 }
 
-func (r *Runtime) SaySomething() {
-	r.log.Info().Msg("Hello World!")
+func (r *Runtime) Start() error {
+	panic("TODO")
 }
