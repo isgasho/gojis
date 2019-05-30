@@ -86,14 +86,14 @@ analysis:
     reports:
       sast: gl-sast-report.json
 
-# build:
-#   stage: build
-#   retry: 2
-#   script:
-#     - go build -o ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/${BIN_NAME} ./cmd
-#   artifacts:
-#     paths:
-#       - ${ARTIFACTS_DIR}
+build:
+  stage: build
+  retry: 2
+  script:
+    - go build -o ${CI_PROJECT_DIR}/${ARTIFACTS_DIR}/${BIN_NAME} ./cmd
+  artifacts:
+    paths:
+      - ${ARTIFACTS_DIR}
 
 # build-all:
 #   stage: build
