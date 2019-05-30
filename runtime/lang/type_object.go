@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"gitlab.com/gojis/vm/runtime/errors"
+	"gitlab.com/gojis/vm/runtime/realm"
 )
 
 var _ Value = (*Object)(nil) // ensure that Object implements Value
@@ -13,7 +14,7 @@ type Object struct {
 	fields map[StringOrSymbol]*Property
 	slots  map[StringOrSymbol]Value
 
-	prototype  *Object
+	prototype  Value // *Object or Null
 	extensible bool
 
 	// Function Object
@@ -32,6 +33,35 @@ type Object struct {
 	Construct func(*Object, ...Value) (*Object, errors.Error)
 }
 
+func ObjectCreate(proto Value, internalSlotsList ...StringOrSymbol) *Object {
+	if internalSlotsList == nil {
+		internalSlotsList = []StringOrSymbol{}
+	}
+
+	obj := new(Object)
+	obj.fields = make(map[StringOrSymbol]*Property)
+	obj.slots = make(map[StringOrSymbol]Value)
+	for _, slot := range internalSlotsList {
+		obj.slots[slot] = Undefined
+	}
+	EnsureTypeOneOf(proto, TypeObject, TypeNull) // panic if proto is not TypeObject or TypeNull
+	obj.prototype = proto
+	obj.extensible = true
+
+	return obj
+}
+
+func CreateBuiltinFunction(fn func(Value, ...Value) (Value, errors.Error), realm *realm.Realm, proto Value, internalSlotsList ...StringOrSymbol) {
+	if realm == nil {
+		panic("TODO: get current realm record")
+	}
+	if proto == nil {
+		proto = realm.GetIntrinsicObject(realm.IntrinsicNameFunctionPrototype)
+	}
+	fobj := ObjectCreate(proto, internalSlotsList...)
+	fobj.Call = fn
+}
+
 // Value returns the object itself.
 //
 //	var o *Object
@@ -47,6 +77,7 @@ func (o *Object) Type() Type { return TypeObject }
 // GetPrototypeOf as specified by the language spec.
 func (o *Object) GetPrototypeOf() Value {
 	if o.prototype == nil {
+		// should not happen
 		return Null
 	}
 

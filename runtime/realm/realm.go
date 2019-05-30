@@ -5,6 +5,12 @@ import (
 	"gitlab.com/gojis/vm/runtime/lang"
 )
 
+const (
+	IntrinsicNameObjectPrototype   = "ObjectPrototype"
+	IntrinsicNameFunctionPrototype = "FunctionPrototype"
+	IntrinsicNameThrowTypeError    = "ThrowTypeError"
+)
+
 type Realm struct {
 	intrinsics  *lang.Record
 	globalObj   lang.Value                   // Object or Undefined
@@ -23,7 +29,20 @@ func CreateRealm() *Realm {
 }
 
 func CreateIntrinsics(r *Realm) {
-	panic("TODO")
+	r.intrinsics = lang.NewRecord()
+	objProto := lang.ObjectCreate(lang.Null)
+	r.intrinsics.SetField(IntrinsicNameObjectPrototype, objProto)
+	// FIXME: %ThrowTypeError% as in 8.2.2 and 9.2.9.1
+
+	panic("TODO: 8.2.2")
+}
+
+func (r *Realm) GetIntrinsicObject(n string) lang.Value {
+	val, ok := r.intrinsics.GetField(n)
+	if !ok {
+		return lang.Undefined
+	}
+	return val.(lang.Value)
 }
 
 func (r *Realm) SetRealmGlobalObject(globalObj, thisValue lang.Value) *Realm {
