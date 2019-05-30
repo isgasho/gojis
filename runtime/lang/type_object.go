@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"gitlab.com/gojis/vm/runtime/errors"
-	"gitlab.com/gojis/vm/runtime/realm"
 )
 
 var _ Value = (*Object)(nil) // ensure that Object implements Value
@@ -49,17 +48,6 @@ func ObjectCreate(proto Value, internalSlotsList ...StringOrSymbol) *Object {
 	obj.extensible = true
 
 	return obj
-}
-
-func CreateBuiltinFunction(fn func(Value, ...Value) (Value, errors.Error), realm *realm.Realm, proto Value, internalSlotsList ...StringOrSymbol) {
-	if realm == nil {
-		panic("TODO: get current realm record")
-	}
-	if proto == nil {
-		proto = realm.GetIntrinsicObject(realm.IntrinsicNameFunctionPrototype)
-	}
-	fobj := ObjectCreate(proto, internalSlotsList...)
-	fobj.Call = fn
 }
 
 // Value returns the object itself.
