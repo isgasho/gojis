@@ -1,5 +1,7 @@
 package lang
 
+import "fmt"
+
 // Type represents a language type as specified by the
 // ECMAScript Language Types.
 type Type uint8
@@ -36,4 +38,20 @@ func (t Type) String() string {
 	default:
 		return "Unknown"
 	}
+}
+
+func EnsureTypeOneOf(arg Value, ts ...Type) {
+	if !TypeIsOneOf(arg, ts...) {
+		panic(fmt.Errorf("Value's type must be one of %v, but was %v", ts, arg.Type()))
+	}
+}
+
+func TypeIsOneOf(arg Value, ts ...Type) bool {
+	got := arg.Type()
+	for _, t := range ts {
+		if t == got {
+			return true
+		}
+	}
+	return false
 }
