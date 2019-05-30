@@ -14,6 +14,8 @@ type Error interface {
 	Kind() ErrorKind
 }
 
+var _ Error = (*errorImpl)(nil) // ensure that errorImpl implements Error
+
 type errorImpl struct {
 	error
 	kind ErrorKind
