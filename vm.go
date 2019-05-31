@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"gitlab.com/gojis/vm/runtime"
 )
@@ -27,20 +26,19 @@ func Run() {
 var rootCmd = &cobra.Command{
 	Use:   "gojis",
 	Short: "Evaluates a set of .js files.",
+	Args:  cobra.ExactArgs(1),
 	RunE: func(c *cobra.Command, args []string) error {
 		return root(args...)
 	},
 }
 
 func root(args ...string) error {
-	logLevel := zerolog.InfoLevel
-	if verbose {
-		logLevel = zerolog.DebugLevel
-	}
+	r := runtime.New()
 
-	r := runtime.New(
-		runtime.LogLevel(logLevel),
-	)
+	err := r.LoadDirectory(args[0])
+	if err != nil {
+		return err
+	}
 
 	return r.Start()
 }

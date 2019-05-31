@@ -1,38 +1,65 @@
 package runtime
 
 import (
+	"fmt"
+	"io"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/diode"
+	"gitlab.com/gojis/parser"
+)
+
+// Flags that are set, internal default values are set, external
+// ones may differ
+var (
+	Debug         = false
+	LogBufferSize = 2000
+	LoadBuffer    = 100
 )
 
 type Runtime struct {
 	log zerolog.Logger
+
+	loadBuffer chan string
+
+	parser *parser.Parser
 }
 
-type RuntimeOption func(*Runtime)
-
-func LogLevel(l zerolog.Level) RuntimeOption {
-	return func(r *Runtime) {
-		r.log = r.log.Level(l)
-	}
-}
-
-func New(opts ...RuntimeOption) *Runtime {
+func New() *Runtime {
 	r := new(Runtime)
 
-	r.log = zerolog.New(os.Stdout).With().
-		Timestamp().
-		Logger().
-		Level(zerolog.InfoLevel)
+	w := os.Stdout
 
-	for _, opt := range opts {
-		opt(r)
+	if Debug {
+		r.log = debugLogger(w)
+	} else {
+		r.log = defaultLogger(w)
 	}
+
+	r.loadBuffer = make(chan string, LoadBuffer)
+	r.parser = parser.New()
 
 	return r
 }
 
-func (r *Runtime) Start() error {
-	panic("TODO")
+func debugLogger(w io.Writer) zerolog.Logger {
+	return zerolog.New(w).With().
+		Timestamp().
+		// Caller().
+		Logger().
+		Level(zerolog.DebugLevel)
+}
+
+func defaultLogger(w io.Writer) zerolog.Logger {
+	wr := diode.NewWriter(w, LogBufferSize, 5*time.Millisecond, func(missed int) {
+		fmt.Printf("Logger dropped %d messages\n", missed)
+	})
+
+	log := zerolog.New(wr).With().
+		Timestamp().
+		Logger().
+		Level(zerolog.InfoLevel)
+	return log
 }
