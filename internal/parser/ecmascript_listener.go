@@ -1,15 +1,18 @@
-// Code generated from JavaScriptParser.g4 by ANTLR 4.7.2. DO NOT EDIT.
+// Code generated from ECMAScript.g4 by ANTLR 4.7.2. DO NOT EDIT.
 
-package parser // JavaScriptParser
+package parser // ECMAScript
 
 import "github.com/antlr/antlr4/runtime/Go/antlr"
 
-// JavaScriptParserListener is a complete listener for a parse tree produced by JavaScriptParser.
-type JavaScriptParserListener interface {
+// ECMAScriptListener is a complete listener for a parse tree produced by ECMAScriptParser.
+type ECMAScriptListener interface {
 	antlr.ParseTreeListener
 
 	// EnterProgram is called when entering the program production.
 	EnterProgram(c *ProgramContext)
+
+	// EnterSourceElements is called when entering the sourceElements production.
+	EnterSourceElements(c *SourceElementsContext)
 
 	// EnterSourceElement is called when entering the sourceElement production.
 	EnterSourceElement(c *SourceElementContext)
@@ -32,8 +35,11 @@ type JavaScriptParserListener interface {
 	// EnterVariableDeclaration is called when entering the variableDeclaration production.
 	EnterVariableDeclaration(c *VariableDeclarationContext)
 
-	// EnterEmptyStatement_ is called when entering the emptyStatement_ production.
-	EnterEmptyStatement_(c *EmptyStatement_Context)
+	// EnterInitialiser is called when entering the initialiser production.
+	EnterInitialiser(c *InitialiserContext)
+
+	// EnterVoidStatement is called when entering the voidStatement production.
+	EnterVoidStatement(c *VoidStatementContext)
 
 	// EnterExpressionStatement is called when entering the expressionStatement production.
 	EnterExpressionStatement(c *ExpressionStatementContext)
@@ -58,9 +64,6 @@ type JavaScriptParserListener interface {
 
 	// EnterForVarInStatement is called when entering the ForVarInStatement production.
 	EnterForVarInStatement(c *ForVarInStatementContext)
-
-	// EnterVarModifier is called when entering the varModifier production.
-	EnterVarModifier(c *VarModifierContext)
 
 	// EnterContinueStatement is called when entering the continueStatement production.
 	EnterContinueStatement(c *ContinueStatementContext)
@@ -110,35 +113,11 @@ type JavaScriptParserListener interface {
 	// EnterFunctionDeclaration is called when entering the functionDeclaration production.
 	EnterFunctionDeclaration(c *FunctionDeclarationContext)
 
-	// EnterClassDeclaration is called when entering the classDeclaration production.
-	EnterClassDeclaration(c *ClassDeclarationContext)
-
-	// EnterClassTail is called when entering the classTail production.
-	EnterClassTail(c *ClassTailContext)
-
-	// EnterClassElement is called when entering the classElement production.
-	EnterClassElement(c *ClassElementContext)
-
-	// EnterMethodDefinition is called when entering the methodDefinition production.
-	EnterMethodDefinition(c *MethodDefinitionContext)
-
-	// EnterGeneratorMethod is called when entering the generatorMethod production.
-	EnterGeneratorMethod(c *GeneratorMethodContext)
-
 	// EnterFormalParameterList is called when entering the formalParameterList production.
 	EnterFormalParameterList(c *FormalParameterListContext)
 
-	// EnterFormalParameterArg is called when entering the formalParameterArg production.
-	EnterFormalParameterArg(c *FormalParameterArgContext)
-
-	// EnterLastFormalParameterArg is called when entering the lastFormalParameterArg production.
-	EnterLastFormalParameterArg(c *LastFormalParameterArgContext)
-
 	// EnterFunctionBody is called when entering the functionBody production.
 	EnterFunctionBody(c *FunctionBodyContext)
-
-	// EnterSourceElements is called when entering the sourceElements production.
-	EnterSourceElements(c *SourceElementsContext)
 
 	// EnterArrayLiteral is called when entering the arrayLiteral production.
 	EnterArrayLiteral(c *ArrayLiteralContext)
@@ -146,17 +125,17 @@ type JavaScriptParserListener interface {
 	// EnterElementList is called when entering the elementList production.
 	EnterElementList(c *ElementListContext)
 
-	// EnterLastElement is called when entering the lastElement production.
-	EnterLastElement(c *LastElementContext)
+	// EnterElision is called when entering the elision production.
+	EnterElision(c *ElisionContext)
 
 	// EnterObjectLiteral is called when entering the objectLiteral production.
 	EnterObjectLiteral(c *ObjectLiteralContext)
 
+	// EnterPropertyNameAndValueList is called when entering the propertyNameAndValueList production.
+	EnterPropertyNameAndValueList(c *PropertyNameAndValueListContext)
+
 	// EnterPropertyExpressionAssignment is called when entering the PropertyExpressionAssignment production.
 	EnterPropertyExpressionAssignment(c *PropertyExpressionAssignmentContext)
-
-	// EnterComputedPropertyExpressionAssignment is called when entering the ComputedPropertyExpressionAssignment production.
-	EnterComputedPropertyExpressionAssignment(c *ComputedPropertyExpressionAssignmentContext)
 
 	// EnterPropertyGetter is called when entering the PropertyGetter production.
 	EnterPropertyGetter(c *PropertyGetterContext)
@@ -164,26 +143,20 @@ type JavaScriptParserListener interface {
 	// EnterPropertySetter is called when entering the PropertySetter production.
 	EnterPropertySetter(c *PropertySetterContext)
 
-	// EnterMethodProperty is called when entering the MethodProperty production.
-	EnterMethodProperty(c *MethodPropertyContext)
-
-	// EnterPropertyShorthand is called when entering the PropertyShorthand production.
-	EnterPropertyShorthand(c *PropertyShorthandContext)
-
 	// EnterPropertyName is called when entering the propertyName production.
 	EnterPropertyName(c *PropertyNameContext)
+
+	// EnterPropertySetParameterList is called when entering the propertySetParameterList production.
+	EnterPropertySetParameterList(c *PropertySetParameterListContext)
 
 	// EnterArguments is called when entering the arguments production.
 	EnterArguments(c *ArgumentsContext)
 
-	// EnterLastArgument is called when entering the lastArgument production.
-	EnterLastArgument(c *LastArgumentContext)
+	// EnterArgumentList is called when entering the argumentList production.
+	EnterArgumentList(c *ArgumentListContext)
 
 	// EnterExpressionSequence is called when entering the expressionSequence production.
 	EnterExpressionSequence(c *ExpressionSequenceContext)
-
-	// EnterTemplateStringExpression is called when entering the TemplateStringExpression production.
-	EnterTemplateStringExpression(c *TemplateStringExpressionContext)
 
 	// EnterTernaryExpression is called when entering the TernaryExpression production.
 	EnterTernaryExpression(c *TernaryExpressionContext)
@@ -239,17 +212,11 @@ type JavaScriptParserListener interface {
 	// EnterDeleteExpression is called when entering the DeleteExpression production.
 	EnterDeleteExpression(c *DeleteExpressionContext)
 
-	// EnterArrowFunctionExpression is called when entering the ArrowFunctionExpression production.
-	EnterArrowFunctionExpression(c *ArrowFunctionExpressionContext)
-
 	// EnterEqualityExpression is called when entering the EqualityExpression production.
 	EnterEqualityExpression(c *EqualityExpressionContext)
 
 	// EnterBitXOrExpression is called when entering the BitXOrExpression production.
 	EnterBitXOrExpression(c *BitXOrExpressionContext)
-
-	// EnterSuperExpression is called when entering the SuperExpression production.
-	EnterSuperExpression(c *SuperExpressionContext)
 
 	// EnterMultiplicativeExpression is called when entering the MultiplicativeExpression production.
 	EnterMultiplicativeExpression(c *MultiplicativeExpressionContext)
@@ -284,9 +251,6 @@ type JavaScriptParserListener interface {
 	// EnterMemberDotExpression is called when entering the MemberDotExpression production.
 	EnterMemberDotExpression(c *MemberDotExpressionContext)
 
-	// EnterClassExpression is called when entering the ClassExpression production.
-	EnterClassExpression(c *ClassExpressionContext)
-
 	// EnterMemberIndexExpression is called when entering the MemberIndexExpression production.
 	EnterMemberIndexExpression(c *MemberIndexExpressionContext)
 
@@ -304,12 +268,6 @@ type JavaScriptParserListener interface {
 
 	// EnterVoidExpression is called when entering the VoidExpression production.
 	EnterVoidExpression(c *VoidExpressionContext)
-
-	// EnterArrowFunctionParameters is called when entering the arrowFunctionParameters production.
-	EnterArrowFunctionParameters(c *ArrowFunctionParametersContext)
-
-	// EnterArrowFunctionBody is called when entering the arrowFunctionBody production.
-	EnterArrowFunctionBody(c *ArrowFunctionBodyContext)
 
 	// EnterAssignmentOperator is called when entering the assignmentOperator production.
 	EnterAssignmentOperator(c *AssignmentOperatorContext)
@@ -329,6 +287,9 @@ type JavaScriptParserListener interface {
 	// EnterKeyword is called when entering the keyword production.
 	EnterKeyword(c *KeywordContext)
 
+	// EnterFutureReservedWord is called when entering the futureReservedWord production.
+	EnterFutureReservedWord(c *FutureReservedWordContext)
+
 	// EnterGetter is called when entering the getter production.
 	EnterGetter(c *GetterContext)
 
@@ -338,8 +299,14 @@ type JavaScriptParserListener interface {
 	// EnterEos is called when entering the eos production.
 	EnterEos(c *EosContext)
 
+	// EnterEof is called when entering the eof production.
+	EnterEof(c *EofContext)
+
 	// ExitProgram is called when exiting the program production.
 	ExitProgram(c *ProgramContext)
+
+	// ExitSourceElements is called when exiting the sourceElements production.
+	ExitSourceElements(c *SourceElementsContext)
 
 	// ExitSourceElement is called when exiting the sourceElement production.
 	ExitSourceElement(c *SourceElementContext)
@@ -362,8 +329,11 @@ type JavaScriptParserListener interface {
 	// ExitVariableDeclaration is called when exiting the variableDeclaration production.
 	ExitVariableDeclaration(c *VariableDeclarationContext)
 
-	// ExitEmptyStatement_ is called when exiting the emptyStatement_ production.
-	ExitEmptyStatement_(c *EmptyStatement_Context)
+	// ExitInitialiser is called when exiting the initialiser production.
+	ExitInitialiser(c *InitialiserContext)
+
+	// ExitVoidStatement is called when exiting the voidStatement production.
+	ExitVoidStatement(c *VoidStatementContext)
 
 	// ExitExpressionStatement is called when exiting the expressionStatement production.
 	ExitExpressionStatement(c *ExpressionStatementContext)
@@ -388,9 +358,6 @@ type JavaScriptParserListener interface {
 
 	// ExitForVarInStatement is called when exiting the ForVarInStatement production.
 	ExitForVarInStatement(c *ForVarInStatementContext)
-
-	// ExitVarModifier is called when exiting the varModifier production.
-	ExitVarModifier(c *VarModifierContext)
 
 	// ExitContinueStatement is called when exiting the continueStatement production.
 	ExitContinueStatement(c *ContinueStatementContext)
@@ -440,35 +407,11 @@ type JavaScriptParserListener interface {
 	// ExitFunctionDeclaration is called when exiting the functionDeclaration production.
 	ExitFunctionDeclaration(c *FunctionDeclarationContext)
 
-	// ExitClassDeclaration is called when exiting the classDeclaration production.
-	ExitClassDeclaration(c *ClassDeclarationContext)
-
-	// ExitClassTail is called when exiting the classTail production.
-	ExitClassTail(c *ClassTailContext)
-
-	// ExitClassElement is called when exiting the classElement production.
-	ExitClassElement(c *ClassElementContext)
-
-	// ExitMethodDefinition is called when exiting the methodDefinition production.
-	ExitMethodDefinition(c *MethodDefinitionContext)
-
-	// ExitGeneratorMethod is called when exiting the generatorMethod production.
-	ExitGeneratorMethod(c *GeneratorMethodContext)
-
 	// ExitFormalParameterList is called when exiting the formalParameterList production.
 	ExitFormalParameterList(c *FormalParameterListContext)
 
-	// ExitFormalParameterArg is called when exiting the formalParameterArg production.
-	ExitFormalParameterArg(c *FormalParameterArgContext)
-
-	// ExitLastFormalParameterArg is called when exiting the lastFormalParameterArg production.
-	ExitLastFormalParameterArg(c *LastFormalParameterArgContext)
-
 	// ExitFunctionBody is called when exiting the functionBody production.
 	ExitFunctionBody(c *FunctionBodyContext)
-
-	// ExitSourceElements is called when exiting the sourceElements production.
-	ExitSourceElements(c *SourceElementsContext)
 
 	// ExitArrayLiteral is called when exiting the arrayLiteral production.
 	ExitArrayLiteral(c *ArrayLiteralContext)
@@ -476,17 +419,17 @@ type JavaScriptParserListener interface {
 	// ExitElementList is called when exiting the elementList production.
 	ExitElementList(c *ElementListContext)
 
-	// ExitLastElement is called when exiting the lastElement production.
-	ExitLastElement(c *LastElementContext)
+	// ExitElision is called when exiting the elision production.
+	ExitElision(c *ElisionContext)
 
 	// ExitObjectLiteral is called when exiting the objectLiteral production.
 	ExitObjectLiteral(c *ObjectLiteralContext)
 
+	// ExitPropertyNameAndValueList is called when exiting the propertyNameAndValueList production.
+	ExitPropertyNameAndValueList(c *PropertyNameAndValueListContext)
+
 	// ExitPropertyExpressionAssignment is called when exiting the PropertyExpressionAssignment production.
 	ExitPropertyExpressionAssignment(c *PropertyExpressionAssignmentContext)
-
-	// ExitComputedPropertyExpressionAssignment is called when exiting the ComputedPropertyExpressionAssignment production.
-	ExitComputedPropertyExpressionAssignment(c *ComputedPropertyExpressionAssignmentContext)
 
 	// ExitPropertyGetter is called when exiting the PropertyGetter production.
 	ExitPropertyGetter(c *PropertyGetterContext)
@@ -494,26 +437,20 @@ type JavaScriptParserListener interface {
 	// ExitPropertySetter is called when exiting the PropertySetter production.
 	ExitPropertySetter(c *PropertySetterContext)
 
-	// ExitMethodProperty is called when exiting the MethodProperty production.
-	ExitMethodProperty(c *MethodPropertyContext)
-
-	// ExitPropertyShorthand is called when exiting the PropertyShorthand production.
-	ExitPropertyShorthand(c *PropertyShorthandContext)
-
 	// ExitPropertyName is called when exiting the propertyName production.
 	ExitPropertyName(c *PropertyNameContext)
+
+	// ExitPropertySetParameterList is called when exiting the propertySetParameterList production.
+	ExitPropertySetParameterList(c *PropertySetParameterListContext)
 
 	// ExitArguments is called when exiting the arguments production.
 	ExitArguments(c *ArgumentsContext)
 
-	// ExitLastArgument is called when exiting the lastArgument production.
-	ExitLastArgument(c *LastArgumentContext)
+	// ExitArgumentList is called when exiting the argumentList production.
+	ExitArgumentList(c *ArgumentListContext)
 
 	// ExitExpressionSequence is called when exiting the expressionSequence production.
 	ExitExpressionSequence(c *ExpressionSequenceContext)
-
-	// ExitTemplateStringExpression is called when exiting the TemplateStringExpression production.
-	ExitTemplateStringExpression(c *TemplateStringExpressionContext)
 
 	// ExitTernaryExpression is called when exiting the TernaryExpression production.
 	ExitTernaryExpression(c *TernaryExpressionContext)
@@ -569,17 +506,11 @@ type JavaScriptParserListener interface {
 	// ExitDeleteExpression is called when exiting the DeleteExpression production.
 	ExitDeleteExpression(c *DeleteExpressionContext)
 
-	// ExitArrowFunctionExpression is called when exiting the ArrowFunctionExpression production.
-	ExitArrowFunctionExpression(c *ArrowFunctionExpressionContext)
-
 	// ExitEqualityExpression is called when exiting the EqualityExpression production.
 	ExitEqualityExpression(c *EqualityExpressionContext)
 
 	// ExitBitXOrExpression is called when exiting the BitXOrExpression production.
 	ExitBitXOrExpression(c *BitXOrExpressionContext)
-
-	// ExitSuperExpression is called when exiting the SuperExpression production.
-	ExitSuperExpression(c *SuperExpressionContext)
 
 	// ExitMultiplicativeExpression is called when exiting the MultiplicativeExpression production.
 	ExitMultiplicativeExpression(c *MultiplicativeExpressionContext)
@@ -614,9 +545,6 @@ type JavaScriptParserListener interface {
 	// ExitMemberDotExpression is called when exiting the MemberDotExpression production.
 	ExitMemberDotExpression(c *MemberDotExpressionContext)
 
-	// ExitClassExpression is called when exiting the ClassExpression production.
-	ExitClassExpression(c *ClassExpressionContext)
-
 	// ExitMemberIndexExpression is called when exiting the MemberIndexExpression production.
 	ExitMemberIndexExpression(c *MemberIndexExpressionContext)
 
@@ -634,12 +562,6 @@ type JavaScriptParserListener interface {
 
 	// ExitVoidExpression is called when exiting the VoidExpression production.
 	ExitVoidExpression(c *VoidExpressionContext)
-
-	// ExitArrowFunctionParameters is called when exiting the arrowFunctionParameters production.
-	ExitArrowFunctionParameters(c *ArrowFunctionParametersContext)
-
-	// ExitArrowFunctionBody is called when exiting the arrowFunctionBody production.
-	ExitArrowFunctionBody(c *ArrowFunctionBodyContext)
 
 	// ExitAssignmentOperator is called when exiting the assignmentOperator production.
 	ExitAssignmentOperator(c *AssignmentOperatorContext)
@@ -659,6 +581,9 @@ type JavaScriptParserListener interface {
 	// ExitKeyword is called when exiting the keyword production.
 	ExitKeyword(c *KeywordContext)
 
+	// ExitFutureReservedWord is called when exiting the futureReservedWord production.
+	ExitFutureReservedWord(c *FutureReservedWordContext)
+
 	// ExitGetter is called when exiting the getter production.
 	ExitGetter(c *GetterContext)
 
@@ -667,4 +592,7 @@ type JavaScriptParserListener interface {
 
 	// ExitEos is called when exiting the eos production.
 	ExitEos(c *EosContext)
+
+	// ExitEof is called when exiting the eof production.
+	ExitEof(c *EofContext)
 }

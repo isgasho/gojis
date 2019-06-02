@@ -22,7 +22,7 @@ func (a *Ast) AddRoot(source string, root IProgramContext) {
 	a.roots[source] = root
 }
 
-func (a *Ast) VisitAsync(visitor JavaScriptParserVisitor) {
+func (a *Ast) VisitAsync(visitor ECMAScriptVisitor) {
 	a.rootsLock.Lock()
 	defer a.rootsLock.Unlock()
 
@@ -31,7 +31,7 @@ func (a *Ast) VisitAsync(visitor JavaScriptParserVisitor) {
 	}
 }
 
-func (a *Ast) Visit(visitor JavaScriptParserVisitor) {
+func (a *Ast) Visit(visitor ECMAScriptVisitor) {
 	a.rootsLock.Lock()
 	defer a.rootsLock.Unlock()
 

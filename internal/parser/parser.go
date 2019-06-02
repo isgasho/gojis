@@ -8,8 +8,10 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
+//go:generate antlr-Dlanguage=Go -visitor ECMAScript.g4
+
 type Parser struct {
-	parser *JavaScriptParser
+	parser *ECMAScriptParser
 	ast    *Ast
 }
 
@@ -35,11 +37,11 @@ func (p *Parser) ParseFile(path string) error {
 		return fmt.Errorf("Error while loading file: %v", err)
 	}
 
-	lexer := NewJavaScriptLexer(input)
+	lexer := NewECMAScriptLexer(input)
 	lexer.RemoveErrorListeners()
 
 	stream := antlr.NewCommonTokenStream(lexer, 0)
-	par := NewJavaScriptParser(stream)
+	par := NewECMAScriptParser(stream)
 	par.RemoveErrorListeners()
 
 	errorCollector := NewCollectingErrorListener()
