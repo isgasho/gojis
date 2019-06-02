@@ -21,7 +21,7 @@ func TestParseFile(t *testing.T) {
 		t.Run(tt.path, func(t *testing.T) {
 			require := require.New(t)
 
-			basePath := "../../test"
+			basePath := "../../test/parser"
 
 			p := parser.New()
 			err := p.ParseFile(filepath.Join(basePath, tt.path))

@@ -1,4 +1,4 @@
-package test262
+package conformance
 
 import (
 	"testing"
