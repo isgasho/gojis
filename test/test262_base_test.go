@@ -78,16 +78,3 @@ func runTable(t *testing.T, basePath string, testCases []testCase) {
 		})
 	}
 }
-
-func __gen_template() {
-	panic("Do not call this, use it to generate test tables instead.")
-
-	filepath.Walk("test262/test/language/types", func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() {
-			return nil
-		}
-
-		fmt.Printf(`{"%v", true},`+"\n", path)
-		return nil
-	})
-}
