@@ -172,7 +172,7 @@ debuggerStatement
     ;
 
 functionDeclaration
-    : Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
+    : Async? Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
     ;
 
 classDeclaration

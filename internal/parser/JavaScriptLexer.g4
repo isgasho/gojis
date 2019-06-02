@@ -113,6 +113,7 @@ BinaryIntegerLiteral:           '0' [bB] [01]+;
 
 /// Keywords
 
+Async:                          'async';
 Break:                          'break';
 Do:                             'do';
 Instanceof:                     'instanceof';
