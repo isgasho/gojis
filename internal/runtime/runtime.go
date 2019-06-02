@@ -22,8 +22,6 @@ var (
 type Runtime struct {
 	log zerolog.Logger
 
-	loadBuffer chan string
-
 	parser *parser.Parser
 }
 
@@ -38,7 +36,6 @@ func New() *Runtime {
 		r.log = defaultLogger(w)
 	}
 
-	r.loadBuffer = make(chan string, LoadBuffer)
 	r.parser = parser.New()
 
 	return r
