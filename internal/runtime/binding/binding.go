@@ -1,6 +1,6 @@
 package binding
 
-import "gitlab.com/gojis/vm/runtime/lang"
+import "gitlab.com/gojis/vm/internal/runtime/lang"
 
 type Binding struct {
 	name      lang.String

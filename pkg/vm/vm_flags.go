@@ -1,6 +1,6 @@
 package vm
 
-import "gitlab.com/gojis/vm/runtime"
+import "gitlab.com/gojis/vm/internal/runtime"
 
 var (
 	verbose bool

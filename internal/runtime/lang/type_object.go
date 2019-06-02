@@ -3,7 +3,7 @@ package lang
 import (
 	"fmt"
 
-	"gitlab.com/gojis/vm/runtime/errors"
+	"gitlab.com/gojis/vm/internal/runtime/errors"
 )
 
 var _ Value = (*Object)(nil) // ensure that Object implements Value

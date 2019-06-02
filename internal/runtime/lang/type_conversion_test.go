@@ -6,7 +6,7 @@ import (
 	"testing/quick"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.com/gojis/vm/runtime/errors"
+	"gitlab.com/gojis/vm/internal/runtime/errors"
 )
 
 type unknownType struct{}

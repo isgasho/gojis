@@ -1,6 +1,6 @@
 package binding
 
-import "gitlab.com/gojis/vm/runtime/lang"
+import "gitlab.com/gojis/vm/internal/runtime/lang"
 
 func GetIdentifierReference(env lang.Value, n lang.String, strict bool) *Reference {
 	if env == lang.Null {

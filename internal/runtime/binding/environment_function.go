@@ -1,8 +1,8 @@
 package binding
 
 import (
-	"gitlab.com/gojis/vm/runtime/errors"
-	"gitlab.com/gojis/vm/runtime/lang"
+	"gitlab.com/gojis/vm/internal/runtime/errors"
+	"gitlab.com/gojis/vm/internal/runtime/lang"
 )
 
 type BindingStatus string

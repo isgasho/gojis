@@ -10,19 +10,28 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.com/gojis/vm/runtime"
+	"gitlab.com/gojis/vm/internal/runtime"
 )
 
 const (
 	test262repo = "https://github.com/tc39/test262"
 )
 
-func init() {
+func TestMain(m *testing.M) {
+	setup()
+	code := m.Run()
+	tearDown()
+	os.Exit(code)
+}
+
+func setup() {
 	cloneTest262Repo()
 }
 
+func tearDown() {}
+
 func cloneTest262Repo() {
-	if _, err := os.Stat("test262"); err == os.ErrNotExist {
+	if _, err := os.Stat("test262"); os.IsNotExist(err) {
 		log.Println("Conformance test directory does not exist, cloning it...")
 
 		var stdout, stderr bytes.Buffer

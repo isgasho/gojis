@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"gitlab.com/gojis/vm/runtime/errors"
+	"gitlab.com/gojis/vm/internal/runtime/errors"
 )
 
 func ToPrimitive(input Value, preferredType interface{}) (Value, errors.Error) {

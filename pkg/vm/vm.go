@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"gitlab.com/gojis/vm/runtime"
+	"gitlab.com/gojis/vm/internal/runtime"
 )
 
 func Run() {
