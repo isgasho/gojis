@@ -3,6 +3,7 @@ package vm
 import (
 	"fmt"
 	"os"
+	"runtime/debug"
 
 	"github.com/spf13/cobra"
 	"gitlab.com/gojis/vm/internal/runtime"
@@ -11,8 +12,7 @@ import (
 func Run() {
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Printf("VM crashed: %v [recovered]\n", err)
-			panic(err)
+			fmt.Printf("VM crashed: %v [recovered]\n\t%v\n", err, string(debug.Stack()))
 		}
 	}()
 
@@ -27,18 +27,21 @@ var rootCmd = &cobra.Command{
 	Use:   "gojis",
 	Short: "Evaluates a set of .js files.",
 	Args:  cobra.ExactArgs(1),
-	RunE: func(c *cobra.Command, args []string) error {
-		return root(args...)
+	Run: func(c *cobra.Command, args []string) {
+		root(args...)
 	},
 }
 
-func root(args ...string) error {
+func root(args ...string) {
 	r := runtime.New()
 
 	err := r.LoadDirectory(args[0])
 	if err != nil {
-		return err
+		fmt.Printf("Error occurred while loading files: %v\n", err)
 	}
 
-	return r.Start()
+	err = r.Start()
+	if err != nil {
+		panic(err)
+	}
 }
