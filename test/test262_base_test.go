@@ -19,9 +19,9 @@ const (
 
 func TestMain(m *testing.M) {
 	setup()
-	code := m.Run()
-	tearDown()
-	os.Exit(code)
+	defer tearDown()
+
+	os.Exit(m.Run())
 }
 
 func setup() {
