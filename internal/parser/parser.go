@@ -40,6 +40,7 @@ func (p *Parser) ParseFile(path string) error {
 
 	stream := antlr.NewCommonTokenStream(lexer, 0)
 	par := NewJavaScriptParser(stream)
+	par.RemoveErrorListeners()
 
 	errorCollector := NewCollectingErrorListener()
 	par.AddErrorListener(errorCollector)
