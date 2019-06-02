@@ -8,7 +8,7 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/diode"
-	"gitlab.com/gojis/parser"
+	"gitlab.com/gojis/vm/internal/parser"
 )
 
 // Flags that are set, internal default values are set, external
