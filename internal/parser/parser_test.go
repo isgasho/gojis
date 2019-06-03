@@ -11,24 +11,40 @@ import (
 const basePath = "test262-parser-tests"
 
 func TestEarly(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
+
 	require := require.New(t)
 	err := filepath.Walk(filepath.Join(basePath, "early"), genWalkerFunc(t, false))
 	require.NoError(err)
 }
 
 func TestFail(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
+
 	require := require.New(t)
 	err := filepath.Walk(filepath.Join(basePath, "fail"), genWalkerFunc(t, false))
 	require.NoError(err)
 }
 
 func TestPass(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
+
 	require := require.New(t)
 	err := filepath.Walk(filepath.Join(basePath, "pass"), genWalkerFunc(t, true))
 	require.NoError(err)
 }
 
 func TestPassExplicit(t *testing.T) {
+	if testing.Short() {
+		t.SkipNow()
+	}
+
 	require := require.New(t)
 	err := filepath.Walk(filepath.Join(basePath, "pass-explicit"), genWalkerFunc(t, true))
 	require.NoError(err)
