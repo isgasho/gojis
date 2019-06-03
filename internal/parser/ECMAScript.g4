@@ -382,7 +382,7 @@ debuggerStatement
 /// FunctionDeclaration :
 ///     function Identifier ( FormalParameterList? ) { FunctionBody }
 functionDeclaration
- : Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
+ : Async? Function Identifier '(' formalParameterList? ')' '{' functionBody '}'
  ;
 
 /// FormalParameterList :
@@ -680,7 +680,8 @@ reservedWord
  ;
 
 keyword
- : Break
+ : Async
+ | Break
  | Do
  | Instanceof
  | Typeof
@@ -834,6 +835,7 @@ OctalIntegerLiteral
  ;
 
 /// 7.6.1.1 Keywords
+Async      : 'async';
 Break      : 'break';
 Do         : 'do';
 Instanceof : 'instanceof';

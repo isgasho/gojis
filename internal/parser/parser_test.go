@@ -1,35 +1,66 @@
-package parser_test
+package parser
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/require"
-	"gitlab.com/gojis/vm/internal/parser"
 )
 
-func TestParseFile(t *testing.T) {
-	tests := []struct {
-		path       string
-		successful bool
-	}{
-		{"parseable/p001.js", true},
-		{"unparseable/up001.js", false},
+const basePath = "test262-parser-tests"
+
+func TestEarly(t *testing.T) {
+	require := require.New(t)
+	err := filepath.Walk(filepath.Join(basePath, "early"), genWalkerFunc(t, false))
+	require.NoError(err)
+}
+
+func TestFail(t *testing.T) {
+	require := require.New(t)
+	err := filepath.Walk(filepath.Join(basePath, "fail"), genWalkerFunc(t, false))
+	require.NoError(err)
+}
+
+func TestPass(t *testing.T) {
+	require := require.New(t)
+	err := filepath.Walk(filepath.Join(basePath, "pass"), genWalkerFunc(t, true))
+	require.NoError(err)
+}
+
+func TestPassExplicit(t *testing.T) {
+	require := require.New(t)
+	err := filepath.Walk(filepath.Join(basePath, "pass-explicit"), genWalkerFunc(t, true))
+	require.NoError(err)
+}
+
+func genWalkerFunc(t *testing.T, successfulParse bool) func(string, os.FileInfo, error) error {
+	return func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		parse(t, path, successfulParse)
+
+		return nil
 	}
+}
 
-	for _, tt := range tests {
-		t.Run(tt.path, func(t *testing.T) {
-			require := require.New(t)
+func parse(t *testing.T, path string, successfulParse bool) {
+	t.Run(path, func(t *testing.T) {
+		require := require.New(t)
 
-			basePath := "../../test/parser"
+		p := New()
+		err := p.ParseFile(path)
 
-			p := parser.New()
-			err := p.ParseFile(filepath.Join(basePath, tt.path))
-			if tt.successful {
-				require.NoError(err)
-			} else {
-				require.Error(err)
-			}
-		})
-	}
+		if successfulParse {
+			require.NoError(err)
+		} else {
+			require.Error(err)
+		}
+	})
 }

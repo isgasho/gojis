@@ -8,7 +8,7 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-//go:generate antlr-Dlanguage=Go -visitor ECMAScript.g4
+//go:generate antlr -Dlanguage=Go -visitor ECMAScript.g4
 
 type Parser struct {
 	parser *ECMAScriptParser
