@@ -100,6 +100,10 @@ func (e *DeclarativeEnvironment) SetMutableBinding(n lang.String, val lang.Value
 	return nil
 }
 
+func (e *DeclarativeEnvironment) GetThisBinding() (lang.Value, errors.Error) {
+	panic("TODO")
+}
+
 func (e *DeclarativeEnvironment) GetBindingValue(n lang.String, strict bool) (lang.Value, errors.Error) {
 	b := e.mustGetBinding(n)
 	if !b.IsInitialized() {

@@ -2,7 +2,7 @@ package binding
 
 import "gitlab.com/gojis/vm/internal/runtime/lang"
 
-func GetIdentifierReference(env lang.Value, n lang.String, strict bool) *Reference {
+func GetIdentifierReference(env lang.InternalValue, n lang.String, strict bool) *Reference {
 	if env == lang.Null {
 		return NewReference(lang.NewStringOrSymbol(n), lang.Undefined, strict)
 	}

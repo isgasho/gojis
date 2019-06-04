@@ -12,33 +12,33 @@ const (
 )
 
 type Realm struct {
-	intrinsics  *lang.Record
-	globalObj   lang.Value                   // Object or Undefined
-	globalEnv   lang.Value                   // Object or Undefined
-	templateMap map[interface{}]*lang.Object // Parse Node -> Object
+	Intrinsics  *lang.Record
+	GlobalObj   lang.Value                   // Object or Undefined
+	GlobalEnv   lang.Value                   // Object or Undefined
+	TemplateMap map[interface{}]*lang.Object // Parse Node -> Object
 	HostDefined lang.Value
 }
 
 func CreateRealm() *Realm {
 	r := new(Realm)
 	CreateIntrinsics(r)
-	r.globalObj = lang.Undefined
-	r.globalEnv = lang.Undefined
-	r.templateMap = make(map[interface{}]*lang.Object)
+	r.GlobalObj = lang.Undefined
+	r.GlobalEnv = lang.Undefined
+	r.TemplateMap = make(map[interface{}]*lang.Object)
 	return r
 }
 
 func CreateIntrinsics(r *Realm) {
-	r.intrinsics = lang.NewRecord()
+	r.Intrinsics = lang.NewRecord()
 	objProto := lang.ObjectCreate(lang.Null)
-	r.intrinsics.SetField(IntrinsicNameObjectPrototype, objProto)
+	r.Intrinsics.SetField(IntrinsicNameObjectPrototype, objProto)
 	// FIXME: %ThrowTypeError% as in 8.2.2 and 9.2.9.1
 
 	panic("TODO: 8.2.2")
 }
 
 func (r *Realm) GetIntrinsicObject(n string) lang.Value {
-	val, ok := r.intrinsics.GetField(n)
+	val, ok := r.Intrinsics.GetField(n)
 	if !ok {
 		return lang.Undefined
 	}
@@ -54,16 +54,16 @@ func (r *Realm) SetRealmGlobalObject(globalObj, thisValue lang.Value) *Realm {
 		thisValue = globalObj
 	}
 
-	r.globalObj = globalObj
+	r.GlobalObj = globalObj
 
-	globalEnv := binding.NewGlobalEnvironment(globalObj.(*lang.Object), thisValue.(*lang.Object))
-	r.globalEnv = globalEnv
+	GlobalEnv := binding.NewGlobalEnvironment(globalObj.(*lang.Object), thisValue.(*lang.Object))
+	r.GlobalEnv = GlobalEnv
 
 	return r
 }
 
 func (r *Realm) SetDefaultGlobalBindings() lang.Value {
-	global := r.globalObj.(*lang.Object)
+	global := r.GlobalObj.(*lang.Object)
 	panic("TODO: for every property\n" + `2. For each property of the Global Object specified in clause 18, do
 	a. Let name be the String value of the property name.
 	b. Let desc be the fully populated data property descriptor for the property containing the specified

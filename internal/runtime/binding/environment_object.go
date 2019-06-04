@@ -45,6 +45,10 @@ func (e *ObjectEnvironment) SetMutableBinding(n lang.String, val lang.Value, str
 	panic("TODO")
 }
 
+func (e *ObjectEnvironment) GetThisBinding() (lang.Value, errors.Error) {
+	panic("TODO")
+}
+
 func (e *ObjectEnvironment) GetBindingValue(n lang.String, strict bool) (lang.Value, errors.Error) {
 	panic("TODO")
 }

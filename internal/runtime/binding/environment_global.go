@@ -20,8 +20,8 @@ func (e *GlobalEnvironment) Outer() Environment {
 	return nil
 }
 
-func (e *GlobalEnvironment) GetThisBinding() *lang.Object {
-	return e.GlobalThisValue
+func (e *GlobalEnvironment) GetThisBinding() (lang.Value, errors.Error) {
+	return e.GlobalThisValue, nil
 }
 
 func (e *GlobalEnvironment) HasVarDeclaration(n lang.String) bool {
