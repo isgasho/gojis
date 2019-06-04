@@ -63,5 +63,13 @@ func (r *Realm) SetRealmGlobalObject(globalObj, thisValue lang.Value) *Realm {
 }
 
 func (r *Realm) SetDefaultGlobalBindings() lang.Value {
-	panic("TODO")
+	global := r.globalObj.(*lang.Object)
+	panic("TODO: for every property\n" + `2. For each property of the Global Object specified in clause 18, do
+	a. Let name be the String value of the property name.
+	b. Let desc be the fully populated data property descriptor for the property containing the specified
+	attributes for the property. For properties listed in 18.2, 18.3, or 18.4 the value of the [[Value]] attribute is
+	the corresponding intrinsic object from realmRec.
+	c. Perform ? DefinePropertyOrThrow(global, name, desc).`)
+
+	return global
 }
