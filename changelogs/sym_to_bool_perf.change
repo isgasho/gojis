@@ -1,0 +1,4 @@
+title: Improved performance of type conversion Symbol to Boolean by 90% ([summary](/test/perf/symbol_to_boolean/summary.txt))
+type: Other
+mergerequest: ""
+author: TimSatke

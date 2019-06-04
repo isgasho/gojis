@@ -4,18 +4,18 @@ var _ Value = (*Symbol)(nil)
 
 // Well-known symbol descriptions as specified in 6.1.5.1.
 var (
-	SymbolAsyncIterator      = Symbol{NewString("Symbol.asyncIterator")}
-	SymbolHasInstance        = Symbol{NewString("Symbol.hasInstance")}
-	SymbolIsConcatSpreadable = Symbol{NewString("Symbol.isConcatSpreadable")}
-	SymbolIterator           = Symbol{NewString("Symbol.iterator")}
-	SymbolMatch              = Symbol{NewString("Symbol.match")}
-	SymbolReplace            = Symbol{NewString("Symbol.replace")}
-	SymbolSearch             = Symbol{NewString("Symbol.search")}
-	SymbolSpecies            = Symbol{NewString("Symbol.species")}
-	SymbolSplit              = Symbol{NewString("Symbol.split")}
-	SymbolToPrimitive        = Symbol{NewString("Symbol.toPrimitive")}
-	SymbolToStringTag        = Symbol{NewString("Symbol.toStringTag")}
-	SymbolUnscopables        = Symbol{NewString("Symbol.unscopables")}
+	SymbolAsyncIterator      = &Symbol{NewString("Symbol.asyncIterator")}
+	SymbolHasInstance        = &Symbol{NewString("Symbol.hasInstance")}
+	SymbolIsConcatSpreadable = &Symbol{NewString("Symbol.isConcatSpreadable")}
+	SymbolIterator           = &Symbol{NewString("Symbol.iterator")}
+	SymbolMatch              = &Symbol{NewString("Symbol.match")}
+	SymbolReplace            = &Symbol{NewString("Symbol.replace")}
+	SymbolSearch             = &Symbol{NewString("Symbol.search")}
+	SymbolSpecies            = &Symbol{NewString("Symbol.species")}
+	SymbolSplit              = &Symbol{NewString("Symbol.split")}
+	SymbolToPrimitive        = &Symbol{NewString("Symbol.toPrimitive")}
+	SymbolToStringTag        = &Symbol{NewString("Symbol.toStringTag")}
+	SymbolUnscopables        = &Symbol{NewString("Symbol.unscopables")}
 )
 
 // Symbol is a language type as specified by the language spec.
