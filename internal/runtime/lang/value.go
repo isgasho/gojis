@@ -8,3 +8,7 @@ type Value interface {
 	// For example, the Value() of a lang.Boolean should be a bool.
 	Value() interface{}
 }
+
+type InternalValue interface {
+	Value
+}

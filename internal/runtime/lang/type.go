@@ -16,7 +16,7 @@ const (
 	TypeNumber
 	TypeObject
 
-	TypeEnvironment // only in references
+	TypeInternal
 )
 
 func (t Type) String() string {

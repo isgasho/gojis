@@ -135,5 +135,5 @@ func (e *DeclarativeEnvironment) WithBaseObject() lang.Value {
 	return lang.Undefined
 }
 
-func (e *DeclarativeEnvironment) Type() lang.Type    { return lang.TypeEnvironment }
+func (e *DeclarativeEnvironment) Type() lang.Type    { return lang.TypeInternal }
 func (e *DeclarativeEnvironment) Value() interface{} { return e }

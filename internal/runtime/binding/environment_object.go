@@ -65,5 +65,5 @@ func (e *ObjectEnvironment) WithBaseObject() lang.Value {
 	panic("TODO")
 }
 
-func (e *ObjectEnvironment) Type() lang.Type    { return lang.TypeEnvironment }
+func (e *ObjectEnvironment) Type() lang.Type    { return lang.TypeInternal }
 func (e *ObjectEnvironment) Value() interface{} { return e }

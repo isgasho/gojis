@@ -6,7 +6,6 @@ import (
 	"runtime/debug"
 
 	"github.com/spf13/cobra"
-	"gitlab.com/gojis/vm/internal/runtime"
 )
 
 func Run() {
@@ -33,15 +32,5 @@ var rootCmd = &cobra.Command{
 }
 
 func root(args ...string) {
-	r := runtime.New()
-
-	err := r.LoadDirectory(args[0])
-	if err != nil {
-		fmt.Printf("Error occurred while loading files: %v\n", err)
-	}
-
-	err = r.Start()
-	if err != nil {
-		panic(err)
-	}
+	panic("TODO")
 }

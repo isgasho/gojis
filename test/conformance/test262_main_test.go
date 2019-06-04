@@ -6,11 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"testing"
-
-	"github.com/stretchr/testify/require"
-	"gitlab.com/gojis/vm/internal/runtime"
 )
 
 const (
@@ -56,25 +52,7 @@ type testCase struct {
 func runTable(t *testing.T, basePath string, testCases []testCase) {
 	for _, tt := range testCases {
 		t.Run(tt.path, func(t *testing.T) {
-			require := require.New(t)
-			var err error
-
-			r := runtime.New()
-
-			err = r.LoadFile(filepath.Join(basePath, tt.path))
-			if tt.expectSuccessfulParse {
-				require.NoError(err)
-			} else {
-				require.Error(err)
-				return // abort if parse error occurred
-			}
-
-			err = r.Start()
-			if tt.expectSuccessfulRun {
-				require.NoError(err)
-			} else {
-				require.Error(err)
-			}
+			panic("TODO")
 		})
 	}
 }

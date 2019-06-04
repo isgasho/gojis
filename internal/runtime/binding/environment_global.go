@@ -162,5 +162,5 @@ func (e *GlobalEnvironment) WithBaseObject() lang.Value {
 	return lang.Undefined
 }
 
-func (e *GlobalEnvironment) Type() lang.Type    { return lang.TypeEnvironment }
+func (e *GlobalEnvironment) Type() lang.Type    { return lang.TypeInternal }
 func (e *GlobalEnvironment) Value() interface{} { return e }
