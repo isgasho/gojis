@@ -1,4 +1,4 @@
-package runtime
+package agent
 
 import (
 	"gitlab.com/gojis/vm/internal/runtime/binding"

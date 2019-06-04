@@ -8,12 +8,12 @@ import (
 type Runtime struct {
 	log zerolog.Logger
 
-	parser *parser.Parser
+	ast *parser.Ast
 }
 
-func New(log zerolog.Logger) *Runtime {
+func New(log zerolog.Logger, ast *parser.Ast) *Runtime {
 	r := new(Runtime)
 	r.log = log
-	r.parser = parser.New()
+	r.ast = ast
 	return r
 }
