@@ -30,7 +30,7 @@ stages:
 # build and immediately stop. It's sorta like having set -e enabled in bash.
 # Make sure golangci-lint is vendored.
 before_script:
-  - go install gotest.tools/gotestsum
+  - go get gotest.tools/gotestsum
 
 script:
 jobs:
