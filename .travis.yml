@@ -30,6 +30,8 @@ notifications:
 # Make sure golangci-lint is vendored.
 before_script:
   - go get gotest.tools/gotestsum
+  - go get github.com/securego/gosec/cmd/gosec
 
 script:
-  - gotestsum --format short-verbose --raw-command go test -json -race -v -coverprofile=coverage.txt -covermode=atomic -short ./... # -short flag will be removed when parser is done
+  - gosec ./... # run vulnerability analysis
+  - gotestsum --raw-command go test -json -race -v -coverprofile=coverage.txt -covermode=atomic -short ./... # -short flag will be removed when parser is done
