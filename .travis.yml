@@ -27,7 +27,8 @@ stages:
 before_script:
   - go get gotest.tools/gotestsum
 
-script:
+# script: ":" # no-op
+
 jobs:
   include:
     - stage: test
