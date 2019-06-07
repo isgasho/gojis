@@ -8,8 +8,6 @@ go:
   - tip
 go_import_path: github.com/TimSatke/gojis
 
-# Force-enable Go modules. Also force go to use the code in vendor/
-# These will both be unnecessary when Go 1.13 lands.
 env:
   - GO111MODULE=on
 
@@ -27,9 +25,10 @@ notifications:
 
 # Anything in before_script that returns a nonzero exit code will flunk the
 # build and immediately stop. It's sorta like having set -e enabled in bash.
-# Make sure golangci-lint is vendored.
 before_script:
   - go get gotest.tools/gotestsum
+  - go get github.com/securego/gosec/cmd/gosec
 
 script:
-  - gotestsum --format short-verbose --raw-command go test -json -race -v -coverprofile=coverage.txt -covermode=atomic -short ./... # -short flag will be removed when parser is done
+  - gosec -quiet ./... # run vulnerability analysis
+  - gotestsum --raw-command go test -json -race -v -coverprofile=coverage.txt -covermode=atomic -short ./... # -short flag will be removed when parser is done
