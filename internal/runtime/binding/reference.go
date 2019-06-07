@@ -80,7 +80,7 @@ func (r *Reference) GetValue() (lang.Value, errors.Error) {
 }
 
 func (r *Reference) PutValue(lang.Value) errors.Error {
-	panic("TODO: 7.3 Operations on Objects")
+	panic("TODO: 6.2.4.9 PutValue")
 }
 
 func (r *Reference) GetThisValue() lang.Value {
