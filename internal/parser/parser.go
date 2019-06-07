@@ -81,9 +81,18 @@ func (e ParserError) Error() string {
 	}
 
 	var buf bytes.Buffer
-	buf.WriteString(fmt.Sprintf("Errors while parsing '%v':", e.file))
+	_, err := buf.WriteString(fmt.Sprintf("Errors while parsing '%v':", e.file))
+	if err != nil {
+		// this cannot happen as we use a bytes.Buffer, which never returns an error
+		panic(err)
+	}
+
 	for i, err := range e.errs {
-		buf.WriteString("\n\t" + strconv.Itoa(i+1) + ") " + err.Error())
+		_, err := buf.WriteString("\n\t" + strconv.Itoa(i+1) + ") " + err.Error())
+		if err != nil {
+			// this cannot happen as we use a bytes.Buffer, which never returns an error
+			panic(err)
+		}
 	}
 
 	return buf.String()
