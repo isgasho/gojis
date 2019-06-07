@@ -7,6 +7,11 @@ go:
   - 1.12.x
   - tip
 
+# Force-enable Go modules. Also force go to use the code in vendor/
+# These will both be unnecessary when Go 1.13 lands.
+env:
+  - GO111MODULE=on
+
 # Don't email me the results of the test runs.
 notifications:
   email: false
