@@ -2,6 +2,7 @@ package realm
 
 import (
 	"gitlab.com/gojis/vm/internal/runtime/binding"
+	"gitlab.com/gojis/vm/internal/runtime/errors"
 	"gitlab.com/gojis/vm/internal/runtime/lang"
 )
 
@@ -72,4 +73,30 @@ func (r *Realm) SetDefaultGlobalBindings() lang.Value {
 	c. Perform ? DefinePropertyOrThrow(global, name, desc).`)
 
 	return global
+}
+
+func GetFunctionRealm(obj *lang.Object) *Realm {
+	panic("TODO")
+}
+
+func OrdinaryCreateFromConstructor(constructor *lang.Object, intrinsicDefaultProto lang.String, internalSlotsList ...lang.StringOrSymbol) (*lang.Object, errors.Error) {
+	proto, err := GetPrototypeFromConstructor(constructor, intrinsicDefaultProto)
+	if err != nil {
+		return nil, err
+	}
+
+	return lang.ObjectCreate(proto, internalSlotsList...), nil
+}
+
+func GetPrototypeFromConstructor(constructor *lang.Object, intrinsicDefaultProto lang.String) (*lang.Object, errors.Error) {
+	proto, err := lang.Get(constructor, lang.NewStringOrSymbol(lang.NewString("prototype")))
+	if err != nil {
+		return nil, err
+	}
+
+	if proto.Type() != lang.TypeObject {
+		realm := GetFunctionRealm(constructor)
+		proto = realm.GetIntrinsicObject(intrinsicDefaultProto.Value().(string))
+	}
+	return proto.(*lang.Object), nil
 }

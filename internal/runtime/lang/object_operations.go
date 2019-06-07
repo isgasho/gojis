@@ -6,17 +6,21 @@ import (
 	"gitlab.com/gojis/vm/internal/runtime/errors"
 )
 
-func Get(o *Object, p StringOrSymbol) Value {
+func Get(o *Object, p StringOrSymbol) (Value, errors.Error) {
 	return o.Get(p, o)
 }
 
-func GetV(v Value, p StringOrSymbol) Value {
+func GetV(v Value, p StringOrSymbol) (Value, errors.Error) {
 	o := ToObject(v)
 	return o.Get(p, v)
 }
 
 func Set(o *Object, p StringOrSymbol, v Value, throw bool) (Boolean, errors.Error) {
-	success := o.Set(p, v, o)
+	success, err := o.Set(p, v, o)
+	if err != nil {
+		return False, err
+	}
+
 	if !success.Value().(bool) && throw {
 		return False, errors.NewTypeError(fmt.Sprintf("Cannot set '%v' of object", p.Value()))
 	}
@@ -61,7 +65,11 @@ func DeletePropertyOrThrow(o *Object, p StringOrSymbol) (Boolean, errors.Error) 
 }
 
 func GetMethod(v Value, p StringOrSymbol) (Value, errors.Error) {
-	f := GetV(v, p)
+	f, err := GetV(v, p)
+	if err != nil {
+		return nil, err
+	}
+
 	if f == Undefined || f == Null {
 		return Undefined, nil
 	}
@@ -78,7 +86,7 @@ func HasProperty(o *Object, p StringOrSymbol) Boolean {
 }
 
 func HasOwnProperty(o *Object, p StringOrSymbol) Boolean {
-	return o.HasOwnProperty(p)
+	return o.GetOwnProperty(p) != nil
 }
 
 func Call(f *Object, thisValue Value, args ...Value) (Value, errors.Error) {
@@ -194,7 +202,11 @@ func Invoke(v Value, p StringOrSymbol, args ...Value) (Value, errors.Error) {
 		args = []Value{}
 	}
 
-	f := GetV(v, p)
+	f, err := GetV(v, p)
+	if err != nil {
+		return nil, err
+	}
+
 	return Call(f.(*Object), v, args...)
 }
 
@@ -207,10 +219,6 @@ func SpeciesConstructor() {
 }
 
 func EnumerableOwnPropertyNames() {
-	panic("TODO")
-}
-
-func GetFunctionRealm() {
 	panic("TODO")
 }
 

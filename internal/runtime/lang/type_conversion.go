@@ -202,7 +202,11 @@ func OrdinaryToPrimitive(o *Object, hint string) (Value, errors.Error) {
 	}
 
 	for _, name := range methodNames {
-		method := Get(o, NewStringOrSymbol(NewString(name)))
+		method, err := Get(o, NewStringOrSymbol(NewString(name)))
+		if err != nil {
+			return nil, err
+		}
+
 		if IsCallable(method) {
 			result, err := Call(method.(*Object), o)
 			if err != nil {

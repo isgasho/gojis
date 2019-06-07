@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/spf13/cobra"
+	"gitlab.com/gojis/vm/pkg/vm/cmd"
 )
 
 func Run() {
@@ -15,22 +15,9 @@ func Run() {
 		}
 	}()
 
-	err := rootCmd.Execute()
+	err := cmd.Execute()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-var rootCmd = &cobra.Command{
-	Use:   "gojis",
-	Short: "Evaluates a set of .js files.",
-	Args:  cobra.ExactArgs(1),
-	Run: func(c *cobra.Command, args []string) {
-		root(args...)
-	},
-}
-
-func root(args ...string) {
-	panic("TODO")
 }

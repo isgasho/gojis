@@ -66,7 +66,7 @@ func TestNewDataProperty(t *testing.T) {
 func TestNewAccessorProperty(t *testing.T) {
 	require := require.New(t)
 
-	p := NewAccessorProperty(func() Value { return nil }, nil, True, False)
+	p := NewAccessorProperty(&Object{}, nil, True, False)
 	require.Len(p.Record.fields, 4)
 
 	field, ok := p.GetField(FieldNameGet)
@@ -101,7 +101,7 @@ func TestPropertyValue(t *testing.T) {
 	t.Run("Accessor Value Undefined", func(t *testing.T) {
 		require := require.New(t)
 
-		p := NewAccessorProperty(func() Value { return nil }, nil, True, False)
+		p := NewAccessorProperty(&Object{}, nil, True, False)
 		require.Equal(Undefined, p.Value())
 	})
 
@@ -193,14 +193,14 @@ func TestPropertyGet(t *testing.T) {
 		require := require.New(t)
 
 		p := NewProperty()
-		require.Nil(p.Get())
+		require.Equal(Undefined, p.Get())
 	})
 
 	t.Run("Get DataProperty", func(t *testing.T) {
 		require := require.New(t)
 
 		p := NewDataProperty(NewString("foobar"), False, False, False)
-		require.Nil(p.Get())
+		require.Equal(Undefined, p.Get())
 	})
 
 	t.Run("Get AccessorProperty nil", func(t *testing.T) {
@@ -213,7 +213,7 @@ func TestPropertyGet(t *testing.T) {
 	t.Run("Get AccessorProperty", func(t *testing.T) {
 		require := require.New(t)
 
-		p := NewAccessorProperty(func() Value { return nil }, nil, False, False)
+		p := NewAccessorProperty(&Object{}, nil, False, False)
 		require.NotNil(p.Get())
 	})
 }
@@ -223,14 +223,14 @@ func TestPropertySet(t *testing.T) {
 		require := require.New(t)
 
 		p := NewProperty()
-		require.Nil(p.Set())
+		require.Equal(Undefined, p.Get())
 	})
 
 	t.Run("Set DataProperty", func(t *testing.T) {
 		require := require.New(t)
 
 		p := NewDataProperty(NewString("foobar"), False, False, False)
-		require.Nil(p.Set())
+		require.Equal(Undefined, p.Get())
 	})
 
 	t.Run("Set AccessorProperty nil", func(t *testing.T) {
@@ -243,7 +243,7 @@ func TestPropertySet(t *testing.T) {
 	t.Run("Set AccessorProperty", func(t *testing.T) {
 		require := require.New(t)
 
-		p := NewAccessorProperty(nil, func(Value) Boolean { return False }, False, False)
+		p := NewAccessorProperty(nil, &Object{}, False, False)
 		require.NotNil(p.Set())
 	})
 }
@@ -252,7 +252,7 @@ func TestPropertyIsXXXDescriptor(t *testing.T) {
 	prop := NewProperty()
 	propBase := NewPropertyBase(False, False)
 	propData := NewDataProperty(Null, False, False, False)
-	propAccess := NewAccessorProperty(func() Value { return nil }, func(Value) Boolean { return False }, False, False)
+	propAccess := NewAccessorProperty(&Object{}, &Object{}, False, False)
 
 	t.Run("IsAccessorDescriptor", func(t *testing.T) {
 		require := require.New(t)

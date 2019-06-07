@@ -59,7 +59,7 @@ func NewDataProperty(value Value, writable, enumerable, configurable Boolean) *P
 
 // NewAccessorProperty creates a new property that is an accessor property descriptor.
 // The fields 'Get', 'Set', 'Enumerable', 'Configurable' are set.
-func NewAccessorProperty(get func() Value, set func(Value) Boolean, enumerable, configurable Boolean) *Property {
+func NewAccessorProperty(get, set *Object, enumerable, configurable Boolean) *Property {
 	p := NewPropertyBase(enumerable, configurable)
 	p.SetField(FieldNameGet, get)
 	p.SetField(FieldNameSet, set)
@@ -88,22 +88,22 @@ func (p *Property) Writable() Boolean {
 
 // Get returns the value of the field 'Get', or False
 // if the field is not set.
-func (p *Property) Get() func() Value {
+func (p *Property) Get() Value {
 	val, ok := p.GetField(FieldNameGet)
 	if !ok {
-		return nil
+		return Undefined
 	}
-	return val.(func() Value)
+	return val.(Value)
 }
 
 // Set returns the value of the field 'Set', or False
 // if the field is not set.
-func (p *Property) Set() func(Value) Boolean {
+func (p *Property) Set() Value {
 	val, ok := p.GetField(FieldNameSet)
 	if !ok {
-		return nil
+		return Undefined
 	}
-	return val.(func(Value) Boolean)
+	return val.(Value)
 }
 
 // Enumerable returns the value of the field 'Enumerable', or False
