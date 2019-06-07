@@ -1,6 +1,6 @@
 package vm
 
-import "gitlab.com/gojis/vm/pkg/vm/cmd"
+import "github.com/TimSatke/gojis/pkg/vm/cmd"
 
 var (
 	Debug         bool

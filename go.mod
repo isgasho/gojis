@@ -1,4 +1,4 @@
-module gitlab.com/gojis/vm
+module github.com/TimSatke/gojis
 
 go 1.12
 

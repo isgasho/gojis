@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"gitlab.com/gojis/vm/internal/runtime/errors"
+	"github.com/TimSatke/gojis/internal/runtime/errors"
 )
 
 func RequireObjectCoercible(arg Value) (Value, errors.Error) {

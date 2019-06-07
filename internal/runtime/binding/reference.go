@@ -3,8 +3,8 @@ package binding
 import (
 	"fmt"
 
-	"gitlab.com/gojis/vm/internal/runtime/errors"
-	"gitlab.com/gojis/vm/internal/runtime/lang"
+	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/TimSatke/gojis/internal/runtime/lang"
 )
 
 type Reference struct {

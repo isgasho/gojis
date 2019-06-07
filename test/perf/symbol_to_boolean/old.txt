@@ -1,13 +1,13 @@
-?   	gitlab.com/gojis/vm/cmd	[no test files]
+?   	github.com/TimSatke/gojis/cmd	[no test files]
 PASS
-ok  	gitlab.com/gojis/vm/internal/parser	0.019s
-?   	gitlab.com/gojis/vm/internal/runtime	[no test files]
-?   	gitlab.com/gojis/vm/internal/runtime/binding	[no test files]
+ok  	github.com/TimSatke/gojis/internal/parser	0.019s
+?   	github.com/TimSatke/gojis/internal/runtime	[no test files]
+?   	github.com/TimSatke/gojis/internal/runtime/binding	[no test files]
 PASS
-ok  	gitlab.com/gojis/vm/internal/runtime/errors	0.014s
+ok  	github.com/TimSatke/gojis/internal/runtime/errors	0.014s
 goos: darwin
 goarch: amd64
-pkg: gitlab.com/gojis/vm/internal/runtime/lang
+pkg: github.com/TimSatke/gojis/internal/runtime/lang
 BenchmarkPropertyValue-8                  	50000000	        33.1 ns/op	       0 B/op	       0 allocs/op
 BenchmarkPropertyEnumerable-8             	50000000	        24.3 ns/op	       0 B/op	       0 allocs/op
 BenchmarkPropertyConfigurable-8           	50000000	        24.6 ns/op	       0 B/op	       0 allocs/op
@@ -28,8 +28,8 @@ BenchmarkBooleanToBoolean-8               	500000000	         4.00 ns/op	       
 BenchmarkNumberToBoolean-8                	20000000	       115 ns/op	      40 B/op	       4 allocs/op
 BenchmarkStringToBoolean-8                	10000000	       164 ns/op	      96 B/op	       4 allocs/op
 PASS
-ok  	gitlab.com/gojis/vm/internal/runtime/lang	35.840s
-?   	gitlab.com/gojis/vm/internal/runtime/realm	[no test files]
-?   	gitlab.com/gojis/vm/pkg/vm	[no test files]
+ok  	github.com/TimSatke/gojis/internal/runtime/lang	35.840s
+?   	github.com/TimSatke/gojis/internal/runtime/realm	[no test files]
+?   	github.com/TimSatke/gojis/pkg/vm	[no test files]
 PASS
-ok  	gitlab.com/gojis/vm/test/conformance	0.015s
+ok  	github.com/TimSatke/gojis/test/conformance	0.015s

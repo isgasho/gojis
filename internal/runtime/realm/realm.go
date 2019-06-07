@@ -1,9 +1,9 @@
 package realm
 
 import (
-	"gitlab.com/gojis/vm/internal/runtime/binding"
-	"gitlab.com/gojis/vm/internal/runtime/errors"
-	"gitlab.com/gojis/vm/internal/runtime/lang"
+	"github.com/TimSatke/gojis/internal/runtime/binding"
+	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/TimSatke/gojis/internal/runtime/lang"
 )
 
 const (

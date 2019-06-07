@@ -4,11 +4,11 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"gitlab.com/gojis/vm/internal/runtime/agent/job"
-	"gitlab.com/gojis/vm/internal/runtime/binding"
-	"gitlab.com/gojis/vm/internal/runtime/errors"
-	"gitlab.com/gojis/vm/internal/runtime/lang"
-	"gitlab.com/gojis/vm/internal/runtime/realm"
+	"github.com/TimSatke/gojis/internal/runtime/agent/job"
+	"github.com/TimSatke/gojis/internal/runtime/binding"
+	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/TimSatke/gojis/internal/runtime/lang"
+	"github.com/TimSatke/gojis/internal/runtime/realm"
 )
 
 type QueueKind uint8

@@ -1,6 +1,6 @@
 package agent
 
-import "gitlab.com/gojis/vm/internal/runtime/agent/stack"
+import "github.com/TimSatke/gojis/internal/runtime/agent/stack"
 
 type ExecutionContextStack struct {
 	stack stack.Stack

@@ -3,7 +3,7 @@ package lang
 import (
 	"fmt"
 
-	"gitlab.com/gojis/vm/internal/runtime/errors"
+	"github.com/TimSatke/gojis/internal/runtime/errors"
 )
 
 func Get(o *Object, p StringOrSymbol) (Value, errors.Error) {
