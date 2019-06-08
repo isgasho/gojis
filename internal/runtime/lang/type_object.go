@@ -401,7 +401,7 @@ func (o *Object) OrdinaryOwnPropertyKeys() []StringOrSymbol {
 		symbolIndex
 	)
 
-	for k, _ := range o.fields {
+	for k := range o.fields {
 		if n, err := strconv.ParseInt(k.String().Value().(string), 10, 64); err == nil && n >= 0 {
 			// k is an integer index
 			secs[integerIndex] = append(secs[integerIndex], k)
