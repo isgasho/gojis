@@ -11,8 +11,7 @@ import (
 //go:generate antlr -Dlanguage=Go -visitor ECMAScript.g4
 
 type Parser struct {
-	parser *ECMAScriptParser
-	ast    *Ast
+	ast *Ast
 }
 
 func New() *Parser {
