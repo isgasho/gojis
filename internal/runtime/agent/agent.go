@@ -3,12 +3,12 @@ package agent
 import (
 	"fmt"
 
-	"github.com/google/uuid"
 	"github.com/TimSatke/gojis/internal/runtime/agent/job"
 	"github.com/TimSatke/gojis/internal/runtime/binding"
 	"github.com/TimSatke/gojis/internal/runtime/errors"
 	"github.com/TimSatke/gojis/internal/runtime/lang"
 	"github.com/TimSatke/gojis/internal/runtime/realm"
+	"github.com/google/uuid"
 )
 
 type QueueKind uint8
@@ -73,10 +73,7 @@ func (a *Agent) GetActiveScriptOrModule() lang.InternalValue {
 	}
 
 	ctx := a.ExecutionContextStack.FindTopDown(func(ctx *ExecutionContext) bool {
-		if ctx.ScriptOrModule != lang.Null {
-			return true
-		}
-		return false
+		return ctx.ScriptOrModule != lang.Null
 	})
 	if ctx == nil {
 		return lang.Null
