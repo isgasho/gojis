@@ -88,7 +88,7 @@ func (a *Agent) ResolveBinding(name lang.String, env ...binding.Environment) *bi
 	}
 
 	var e binding.Environment
-	if env == nil || len(env) == 0 {
+	if len(env) == 0 {
 		e = a.RunningExecutionContext().LexicalEnvironment
 	} else {
 		e = env[0]
