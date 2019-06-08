@@ -2,6 +2,7 @@ package conformance
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -27,6 +28,8 @@ func setup() {
 func tearDown() {}
 
 func cloneTest262Repo() {
+	flag.Parse()
+
 	if testing.Short() {
 		// don't clone if short testing
 		return
