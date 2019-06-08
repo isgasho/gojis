@@ -27,6 +27,11 @@ func setup() {
 func tearDown() {}
 
 func cloneParserTestRepo() {
+	if testing.Short() {
+		// don't clone if short testing
+		return
+	}
+
 	if _, err := os.Stat("test262-parser-tests"); os.IsNotExist(err) {
 		log.Println("Parser test directory does not exist, cloning it...")
 
