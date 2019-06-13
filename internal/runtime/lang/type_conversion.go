@@ -7,6 +7,8 @@ import (
 	"github.com/TimSatke/gojis/internal/runtime/errors"
 )
 
+// ToPrimitive converts a Value to a primitive type according to 7.1.1 in
+// the specification.
 func ToPrimitive(input Value, preferredType interface{}) (Value, errors.Error) {
 	if input.Type() == TypeObject {
 		var hint string
@@ -62,6 +64,7 @@ func ToPrimitive(input Value, preferredType interface{}) (Value, errors.Error) {
 	return input, nil
 }
 
+// ToBoolean converts a Value to a Boolean according to 7.1.2 in the specification.
 func ToBoolean(arg Value) Boolean {
 	switch arg.Type() {
 	case TypeUndefined,
@@ -89,6 +92,7 @@ func ToBoolean(arg Value) Boolean {
 	panic(unhandledType(arg))
 }
 
+// ToNumber converts a Value to a Number according to 7.1.3 in the specification.
 func ToNumber(arg Value) (Number, errors.Error) {
 	switch arg.Type() {
 	case TypeUndefined:
@@ -117,6 +121,8 @@ func ToNumber(arg Value) (Number, errors.Error) {
 	panic(unhandledType(arg))
 }
 
+// ToInteger converts a Value to a Number whose value is an integer, according to
+// 7.1.4 in the specification.
 func ToInteger(arg Value) (Number, errors.Error) {
 	number, err := ToNumber(arg)
 	if err != nil {
@@ -139,62 +145,92 @@ func ToInteger(arg Value) (Number, errors.Error) {
 	return NewNumber(math.Floor(val.(float64))), nil
 }
 
+// ToInt32 converts a Value to a Number whose value is an int32
+// according to 7.1.5 in the specification.
 func ToInt32(arg Value) Number {
 	panic("TODO")
 }
 
+// ToUint32 converts a Value to a Number whose value is an uint32
+// according to 7.1.6 in the specification.
 func ToUint32(arg Value) Number {
 	panic("TODO")
 }
 
+// ToInt16 converts a Value to a Number whose value is an int16
+// according to 7.1.7 in the specification.
 func ToInt16(arg Value) Number {
 	panic("TODO")
 }
 
+// ToUint16 converts a Value to a Number whose value is an uint16
+// according to 7.1.8 in the specification.
 func ToUint16(arg Value) Number {
 	panic("TODO")
 }
 
+// ToInt8 converts a Value to a Number whose value is an int8
+// according to 7.1.9 in the specification.
 func ToInt8(arg Value) Number {
 	panic("TODO")
 }
 
+// ToUint8 converts a Value to a Number whose value is an uint8
+// according to 7.1.10 in the specification.
 func ToUint8(arg Value) Number {
 	panic("TODO")
 }
 
+// ToUint8Clamp converts a Value to a Number whose value is an uint8
+// according to 7.1.11 in the specification.
 func ToUint8Clamp(arg Value) Number {
 	panic("TODO")
 }
 
+// ToString converts a Value to a String according to 7.1.12 in the
+// specification.
 func ToString(arg Value) String {
 	panic("TODO")
 }
 
-func NumberToString() String {
+// NumberToString converts a Number to a String according to 7.1.12.1
+// in the specification.
+func NumberToString(m Number) String {
 	panic("TODO")
 }
 
+// ToObject converts a Value to an object according to 7.1.13 in the
+// specification.
 func ToObject(arg Value) *Object {
 	panic("TODO")
 }
 
+// ToPropertyKey converts a Value to a property key (this implementation
+// represents property keys with the type StringOrSymbol) according
+// to 7.1.14 in the specification.
 func ToPropertyKey(arg Value) StringOrSymbol {
 	panic("TODO")
 }
 
+// ToLength converts a Value to a Number whose value is an integer
+// according to 7.1.15 in the specification.
 func ToLength(arg Value) Number {
 	panic("TODO")
 }
 
+// CanonicalNumericIndexString converts a Value to a Number according
+// to 7.1.16 in the specification.
 func CanonicalNumericIndexString(arg Value) Number {
 	panic("TODO")
 }
 
+// ToIndex converts a Value to a Number according to 7.1.17 in the specification.
 func ToIndex(arg Value) Number {
 	panic("TODO")
 }
 
+// OrdinaryToPrimitive converts an Object to a value, respecting the
+// given hint, according to 7.1.1.1 in the specification.
 func OrdinaryToPrimitive(o *Object, hint string) (Value, errors.Error) {
 	methodNames := []string{"valueOf", "toString"}
 	if hint == "string" {
@@ -222,6 +258,7 @@ func OrdinaryToPrimitive(o *Object, hint string) (Value, errors.Error) {
 	return nil, errors.NewTypeError("Cannot convert ordinary object to primitive")
 }
 
+// unhandledType returns an error saying "Unhandled type in type conversion: '<arg.Type()>'".
 func unhandledType(arg Value) error {
 	return fmt.Errorf("Unhandled type in type conversion: '%v'", arg.Type())
 }
