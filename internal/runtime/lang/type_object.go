@@ -84,7 +84,7 @@ func (o *Object) OrdinarySetPrototypeOf(v Value) Boolean {
 	extensible := o.extensible
 	current := o.prototype
 
-	if SameValue(v, current) {
+	if InternalSameValue(v, current) {
 		return True
 	}
 
@@ -102,7 +102,7 @@ func (o *Object) OrdinarySetPrototypeOf(v Value) Boolean {
 	for !done {
 		if p == Null {
 			done = true
-		} else if SameValue(p, o) {
+		} else if InternalSameValue(p, o) {
 			return False
 		} else {
 			// FIXME: if p.GetPrototypeOf is not the ordinary object internal method defined in 9.1.1,
@@ -245,7 +245,7 @@ func (o *Object) ValidateAndApplyPropertyDescriptor(p StringOrSymbol, extensible
 				return False
 			}
 
-			if _, ok := desc.GetField(FieldNameValue); Boolean(ok) && !SameValue(desc.Value(), current.Value()) {
+			if _, ok := desc.GetField(FieldNameValue); ok && !InternalSameValue(desc.Value(), current.Value()) {
 				return False
 			}
 

@@ -243,7 +243,7 @@ func OrdinaryToPrimitive(o *Object, hint string) (Value, errors.Error) {
 			return nil, err
 		}
 
-		if IsCallable(method) {
+		if InternalIsCallable(method) {
 			result, err := Call(method.(*Object), o)
 			if err != nil {
 				return nil, err
