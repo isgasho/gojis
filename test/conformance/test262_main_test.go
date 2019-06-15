@@ -27,6 +27,11 @@ func setup() {
 func tearDown() {}
 
 func cloneTest262Repo() {
+	if testing.Short() {
+		// don't clone if short testing
+		return
+	}
+
 	if _, err := os.Stat("test262"); os.IsNotExist(err) {
 		log.Println("Conformance test directory does not exist, cloning it...")
 
