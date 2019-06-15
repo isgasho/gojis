@@ -7,6 +7,7 @@ type ErrorKind uint8
 const (
 	ErrorKindTypeError ErrorKind = iota
 	ErrorKindReferenceError
+	ErrorKindRangeError
 )
 
 type Error interface {
@@ -36,5 +37,12 @@ func NewReferenceError(msg string) Error {
 	return errorImpl{
 		error: fmt.Errorf("ReferenceError: %v", msg),
 		kind:  ErrorKindReferenceError,
+	}
+}
+
+func NewRangeError(msg string) Error {
+	return errorImpl{
+		error: fmt.Errorf("RangeError: %v", msg),
+		kind:  ErrorKindRangeError,
 	}
 }
