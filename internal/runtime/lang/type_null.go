@@ -1,13 +1,14 @@
 package lang
 
 var _ Value = (*valueNull)(nil) // ensure that valueNull implements Value
+var _ Value = Null              // ensure that Null can actually be used as a value
 
-var (
+const (
 	// Null represents the Null value as specified by the language spec
-	Null Value = &valueNull{}
+	Null = valueNull(0)
 )
 
-type valueNull struct{}
+type valueNull uint8
 
 // Value returns nil.
 func (valueNull) Value() interface{} { return nil }
