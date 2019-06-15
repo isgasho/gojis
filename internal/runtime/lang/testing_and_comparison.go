@@ -59,10 +59,10 @@ func InternalIsConstructor(arg Value) bool {
 	return false
 }
 
-func IsExtensible(o *Object) Boolean { return Boolean(InternalIsExtensible(o)) }
+func IsExtensible(o *Object) Boolean { return o.IsExtensible() }
 
 func InternalIsExtensible(o *Object) bool {
-	return o.IsExtensible().Value().(bool)
+	return IsExtensible(o).Value().(bool)
 }
 
 func IsInteger(arg Value) Boolean { return Boolean(InternalIsInteger(arg)) }
