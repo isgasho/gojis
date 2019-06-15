@@ -8,15 +8,15 @@ type Type uint8
 
 // Language Type as specified in 6.1
 const (
-	TypeUndefined Type = iota
+	TypeInternal Type = iota
+
+	TypeUndefined
 	TypeNull
 	TypeBoolean
 	TypeString
 	TypeSymbol
 	TypeNumber
 	TypeObject
-
-	TypeInternal
 )
 
 func (t Type) String() string {
