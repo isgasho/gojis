@@ -1,13 +1,16 @@
 package lang
 
-var _ Value = (*valueUndefined)(nil) // ensure valueUndefined implements Value
-
 var (
-	// Undefined represents the Undefined value as specified by the language spec.
-	Undefined Value = &valueUndefined{}
+	_ Value = (*valueUndefined)(nil) // ensure valueUndefined implements Value
+	_ Value = Undefined              // ensure that Undefined can actually be used as a Value
 )
 
-type valueUndefined struct{}
+const (
+	// Undefined represents the Undefined value as specified by the language spec.
+	Undefined = valueUndefined(0)
+)
+
+type valueUndefined uint8
 
 // Value returns Undefined.
 func (valueUndefined) Value() interface{} { return Undefined }

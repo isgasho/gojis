@@ -1,7 +1,9 @@
 package lang
 
-var _ Value = (*valueNull)(nil) // ensure that valueNull implements Value
-var _ Value = Null              // ensure that Null can actually be used as a value
+var (
+	_ Value = (*valueNull)(nil) // ensure that valueNull implements Value
+	_ Value = Null              // ensure that Null can actually be used as a value
+)
 
 const (
 	// Null represents the Null value as specified by the language spec
