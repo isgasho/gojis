@@ -3,7 +3,7 @@ package lang
 var _ Value = (*Boolean)(nil) // ensure that Boolean implements Value
 
 // Available Boolean values
-var (
+const (
 	True  = Boolean(true)
 	False = Boolean(false)
 )
