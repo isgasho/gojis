@@ -4,49 +4,53 @@ import "testing"
 
 var r interface{}
 
-func BenchmarkPush(b *testing.B) {
-	var s Stack
-
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		s = s.Push("foo")
-	}
-
-	r = s
+func benchmarkStack(b *testing.B, s Stack) {
+	b.Run("Push", benchmarkPush(s))
+	b.Run("Push Pop", benchmarkPushPop(s))
+	b.Run("Peek", benchmarkPeek(s))
 }
 
-func BenchmarkPushPop(b *testing.B) {
-	s := Stack(make([]interface{}, b.N))
-	var elem interface{}
-	var ok bool
-	val := "foo"
+func benchmarkPush(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		b.ReportAllocs()
+		b.ResetTimer()
 
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		s = s.Push(val)
-		s, elem, ok = s.Pop()
+		for i := 0; i < b.N; i++ {
+			s.Push("foo")
+		}
 	}
-
-	_, r, _ = s, elem, ok
 }
 
-func BenchmarkPeek(b *testing.B) {
-	var s Stack
-	var elem interface{}
-	var ok bool
+func benchmarkPushPop(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		var elem interface{}
+		val := "foo"
 
-	s = s.Push("foo")
+		b.ReportAllocs()
+		b.ResetTimer()
 
-	b.ReportAllocs()
-	b.ResetTimer()
+		for i := 0; i < b.N; i++ {
+			s.Push(val)
+			elem = s.Pop()
+		}
 
-	for i := 0; i < b.N; i++ {
-		elem, ok = s.Peek()
+		r = elem
 	}
+}
 
-	r, _ = elem, ok
+func benchmarkPeek(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		var elem interface{}
+
+		s.Push("foo")
+
+		b.ReportAllocs()
+		b.ResetTimer()
+
+		for i := 0; i < b.N; i++ {
+			elem = s.Peek()
+		}
+
+		r = elem
+	}
 }
