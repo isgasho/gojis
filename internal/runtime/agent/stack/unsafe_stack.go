@@ -15,7 +15,7 @@ func NewUnsafeStack() Stack {
 }
 
 func (s *unsafeStack) Push(v interface{}) {
-	ptr := unsafe.Pointer(&v)
+	ptr := unsafe.Pointer(&v) // #nosec
 	s.s = s.s.push(ptr)
 }
 
