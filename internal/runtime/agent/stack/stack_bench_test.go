@@ -1,52 +1,83 @@
 package stack
 
-import "testing"
+import (
+	"crypto/rand"
+	"testing"
+)
 
 var r interface{}
 
-func BenchmarkPush(b *testing.B) {
-	var s Stack
-
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		s = s.Push("foo")
-	}
-
-	r = s
+func benchmarkStack(b *testing.B, s Stack) {
+	b.Run("Push 3B", benchmarkPush(s))
+	b.Run("Push 8KB", benchmarkPushLarge(s))
+	b.Run("Push Pop", benchmarkPushPop(s))
+	b.Run("Peek", benchmarkPeek(s))
 }
 
-func BenchmarkPushPop(b *testing.B) {
-	s := Stack(make([]interface{}, b.N))
-	var elem interface{}
-	var ok bool
-	val := "foo"
+func benchmarkPush(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		b.ReportAllocs()
+		b.ResetTimer()
 
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		s = s.Push(val)
-		s, elem, ok = s.Pop()
+		for i := 0; i < b.N; i++ {
+			s.Push("foo")
+		}
 	}
-
-	_, r, _ = s, elem, ok
 }
 
-func BenchmarkPeek(b *testing.B) {
-	var s Stack
-	var elem interface{}
-	var ok bool
+func benchmarkPushLarge(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		var data [8192]byte
+		rand.Read(data[:])
 
-	s = s.Push("foo")
+		type t struct {
+			data [8192]byte
+		}
+		newT := func() t {
+			t := new(t)
+			t.data = data
+			return *t
+		}
 
-	b.ReportAllocs()
-	b.ResetTimer()
+		b.ReportAllocs()
+		b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
-		elem, ok = s.Peek()
+		for i := 0; i < b.N; i++ {
+			s.Push(newT())
+		}
 	}
+}
 
-	r, _ = elem, ok
+func benchmarkPushPop(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		var elem interface{}
+		val := "foo"
+
+		b.ReportAllocs()
+		b.ResetTimer()
+
+		for i := 0; i < b.N; i++ {
+			s.Push(val)
+			elem = s.Pop()
+		}
+
+		r = elem
+	}
+}
+
+func benchmarkPeek(s Stack) func(b *testing.B) {
+	return func(b *testing.B) {
+		var elem interface{}
+
+		s.Push("foo")
+
+		b.ReportAllocs()
+		b.ResetTimer()
+
+		for i := 0; i < b.N; i++ {
+			elem = s.Peek()
+		}
+
+		r = elem
+	}
 }
