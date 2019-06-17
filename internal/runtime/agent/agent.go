@@ -60,11 +60,7 @@ func (a *Agent) AgentCanSuspend() bool {
 }
 
 func (a *Agent) RunningExecutionContext() *ExecutionContext {
-	ctx, ok := a.ExecutionContextStack.Peek()
-	if !ok {
-		return nil
-	}
-	return ctx
+	return a.ExecutionContextStack.Peek()
 }
 
 func (a *Agent) GetActiveScriptOrModule() lang.InternalValue {
@@ -72,31 +68,18 @@ func (a *Agent) GetActiveScriptOrModule() lang.InternalValue {
 		return lang.Null
 	}
 
-	ctx := a.ExecutionContextStack.FindTopDown(func(ctx *ExecutionContext) bool {
-		return ctx.ScriptOrModule != lang.Null
-	})
-	if ctx == nil {
-		return lang.Null
-	}
-
-	return ctx.ScriptOrModule
+	panic("TODO")
 }
 
-func (a *Agent) ResolveBinding(name lang.String, env ...binding.Environment) *binding.Reference {
-	if len(env) > 1 {
-		panic("Cannot take more than 1 environment")
-	}
-
-	var e binding.Environment
-	if len(env) == 0 {
-		e = a.RunningExecutionContext().LexicalEnvironment
-	} else {
-		e = env[0]
+func (a *Agent) ResolveBinding(name lang.String, env binding.Environment) *binding.Reference {
+	if env == nil {
+		env = a.RunningExecutionContext().LexicalEnvironment
 	}
 
 	strict := false // FIXME: 8.3.2, Step 3
+	panic("TODO: 8.3.2, Step 3")
 
-	return binding.GetIdentifierReference(e, name, strict)
+	return binding.GetIdentifierReference(env, name, strict)
 }
 
 func (a *Agent) GetThisEnvironment() binding.Environment {
