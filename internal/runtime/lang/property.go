@@ -166,14 +166,17 @@ func (p *Property) IsGenericDescriptor() Boolean {
 	return False
 }
 
+// FromPropertyDescriptor TODO:
 func FromPropertyDescriptor(desc *Property) *Object {
 	panic("TODO")
 }
 
+// ToPropertyDescriptor TODO:
 func ToPropertyDescriptor(obj *Object) *Property {
 	panic("TODO")
 }
 
+// CompletePropertyDescriptor TODO:
 func CompletePropertyDescriptor(desc *Property) *Property {
 	panic("TODO")
 }
