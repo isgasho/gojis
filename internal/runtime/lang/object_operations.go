@@ -276,7 +276,7 @@ func SpeciesConstructor() {
 	panic("TODO")
 }
 
-// EnumberableOwnPropertyNames is specified in 7.3.21.
+// EnumerableOwnPropertyNames is specified in 7.3.21.
 func EnumerableOwnPropertyNames() {
 	panic("TODO")
 }
