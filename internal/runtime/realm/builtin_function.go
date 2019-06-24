@@ -5,7 +5,9 @@ import (
 	"github.com/TimSatke/gojis/internal/runtime/lang"
 )
 
-func CreateBuiltinFunction(fn func(lang.Value, ...lang.Value) (lang.Value, errors.Error), realm *Realm, proto lang.Value, internalSlotsList ...lang.StringOrSymbol) {
+// CreateBuiltinFunction creates a callable object, whose Call internal method will be the passed function fn.
+// CreateBuiltinFunction is specified in 9.3.3.
+func CreateBuiltinFunction(fn func(lang.Value, ...lang.Value) (lang.Value, errors.Error), realm *Realm, proto lang.Value, internalSlotsList ...lang.StringOrSymbol) *lang.Object {
 	if realm == nil {
 		panic("TODO: get current realm record")
 	}
