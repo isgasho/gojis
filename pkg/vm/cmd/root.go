@@ -2,10 +2,12 @@ package cmd
 
 import "github.com/spf13/cobra"
 
+// Execute is used to execute the RootCmd.
 func Execute() error {
 	return RootCmd.Execute()
 }
 
+// RootCmd is the root cobra command of the VM.
 var RootCmd = &cobra.Command{
 	Use:   "gojis",
 	Short: "Evaluates a set of .js files.",

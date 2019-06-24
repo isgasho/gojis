@@ -8,6 +8,8 @@ import (
 	"github.com/TimSatke/gojis/pkg/vm/cmd"
 )
 
+// Run is the entry point of the VM.
+// It will recover any panic and print its message, including a stack trace.
 func Run() {
 	defer func() {
 		if err := recover(); err != nil {

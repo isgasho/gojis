@@ -5,6 +5,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
+// Runtime is an object that will evaluate
+// an AST.
 type Runtime struct {
 	log zerolog.Logger
 

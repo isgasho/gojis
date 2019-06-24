@@ -2,6 +2,7 @@ package vm
 
 import "github.com/TimSatke/gojis/pkg/vm/cmd"
 
+// Command-line flags.
 var (
 	Debug         bool
 	LogBufferSize int
