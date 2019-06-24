@@ -135,7 +135,7 @@ func InternalIsRegExp(arg Value) bool {
 		return false
 	}
 
-	panic("TODOL 7.2.8 InternalIsRegExp")
+	panic("TODO: 7.2.8 InternalIsRegExp")
 }
 
 // IsStringPrefix is used to determine whether p is a prefix of q or not.
