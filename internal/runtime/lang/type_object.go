@@ -1,7 +1,6 @@
 package lang
 
 import (
-	"fmt"
 	"reflect"
 	"strconv"
 
@@ -34,6 +33,11 @@ type Object struct {
 	Construct func(*Object, ...Value) (*Object, errors.Error)
 }
 
+// ObjectCreate creates a new ordinary object at runtime, where proto is the given prototype
+// (must be an Object or Null), and internalSlotsList is a list of the names of additional
+// internal slots that must be defined as part of the object. If none are provided,
+// an empty list is used.
+// ObjectCreate is specified in 9.1.12.
 func ObjectCreate(proto Value, internalSlotsList ...StringOrSymbol) *Object {
 	if internalSlotsList == nil {
 		internalSlotsList = []StringOrSymbol{}
@@ -64,22 +68,30 @@ func (o *Object) Type() Type { return TypeObject }
 
 /* -- 9.1, ordinary object internal methods and internal slots -- */
 
+// GetPrototypeOf delegates to OrdinaryGetPrototypeOf.
+// GetPrototypeOf is specified in 9.1.1.
 func (o *Object) GetPrototypeOf() Value {
 	return o.OrdinaryGetPrototypeOf()
 }
 
+// OrdinaryGetPrototypeOf returns the prototype of the
+// object, either an Object or Null.
+// OrdinaryGetPrototypeOf is specified in 9.1.1.1.
 func (o *Object) OrdinaryGetPrototypeOf() Value {
 	return o.prototype
 }
 
+// SetPrototypeOf delegates to OrdinarySetPrototypeOf.
+// SetPrototypeOf is specified in 9.1.2.
 func (o *Object) SetPrototypeOf(v Value) Boolean {
 	return o.OrdinarySetPrototypeOf(v)
 }
 
+// OrdinarySetPrototypeOf sets the prototype of the object.
+// The given prototype value can either be an Object or Null.
+// OrdinarySetPrototypeOf is specified in 9.1.2.1.
 func (o *Object) OrdinarySetPrototypeOf(v Value) Boolean {
-	if t := v.Type(); t != TypeObject && t != TypeNull {
-		panic(fmt.Sprintf("Type of prototype object must be Object or Null, cannot be %v", t))
-	}
+	EnsureTypeOneOf(v, TypeObject, TypeNull)
 
 	extensible := o.extensible
 	current := o.prototype
@@ -117,34 +129,51 @@ func (o *Object) OrdinarySetPrototypeOf(v Value) Boolean {
 	return True
 }
 
+// IsExtensible delegates to OrdinaryIsExtensible.
+// IsExtensible is specified in 9.1.3.
 func (o *Object) IsExtensible() Boolean {
 	return o.OrdinaryIsExtensible()
 }
 
+// OrdinaryIsExtensible is used to determine whether the object is
+// extensible.
+// OrdinaryIsExtensible is specified in 9.1.3.1.
 func (o *Object) OrdinaryIsExtensible() Boolean {
 	return Boolean(o.extensible)
 }
 
+// PreventExtensions delegates to OrdinaryPreventExtensions.
+// PreventExtensions is specified in 9.1.4.
 func (o *Object) PreventExtensions() Boolean {
 	return o.OrdinaryPreventExtensions()
 }
 
+// OrdinaryPreventExtensions makes the object non-extensible.
+// After a call to this method, IsExtensible and OrdinaryIsExtensible
+// calls to the object will always return false.
+// OrdinaryPreventExtensions is specified in 9.1.4.1.
 func (o *Object) OrdinaryPreventExtensions() Boolean {
 	o.extensible = false
 	return True
 }
 
+// GetOwnProperty delegates to OrdinaryGetOwnProperty.
+// GetOwnProperty is specified in 9.1.5.
 func (o *Object) GetOwnProperty(p StringOrSymbol) *Property {
 	return o.OrdinaryGetOwnProperty(p)
 }
 
+// OrdinaryGetOwnProperty returns a property with the given key of this object.
+// Where Undefined in the specification is used to indicate no result, here, a nil
+// pointer is used.
+// OrdinaryGetOwnProperty is specified in 9.1.5.1.
 func (o *Object) OrdinaryGetOwnProperty(p StringOrSymbol) *Property {
 	x, ok := o.fields[p]
 	if !ok {
 		return nil // actually Undefined
 	}
 
-	// TODO: maybe introduce a Propery#copy function?
+	// TODO: maybe introduce a Property#copy function?
 	d := NewProperty()
 	if x.IsDataDescriptor() {
 		d.SetField(FieldNameValue, x.Value())
@@ -159,21 +188,32 @@ func (o *Object) OrdinaryGetOwnProperty(p StringOrSymbol) *Property {
 	return d
 }
 
+// DefineOwnProperty delegates to OrdinaryDefineOwnProperty.
+// DefineOwnProperty is specified in 9.1.6.
 func (o *Object) DefineOwnProperty(p StringOrSymbol, desc *Property) Boolean {
 	return o.OrdinaryDefineOwnProperty(p, desc)
 }
 
+// OrdinaryDefineOwnProperty is used to define an own property of the object.
+// OrdinaryDefineOwnProperty is specified in 9.1.6.1.
 func (o *Object) OrdinaryDefineOwnProperty(p StringOrSymbol, desc *Property) Boolean {
 	current := o.GetOwnProperty(p)
 	extensible := o.extensible
 	return o.ValidateAndApplyPropertyDescriptor(p, extensible, desc, current)
 }
 
+// IsCompatiblePropertyDescriptor delegates to ValidateAndApplyPropertyDescriptor
+// on a nil Object and a zero StringOrSymbol. This resembles the behaviour of
+// the object and the property key being Undefined.
+// IsCompatiblePropertyDescriptor is specified in 9.1.6.2.
 func (o *Object) IsCompatiblePropertyDescriptor(extensible bool, desc, current *Property) Boolean {
 	// TODO: make code more beautiful
 	return ((*Object)(nil)).ValidateAndApplyPropertyDescriptor(StringOrSymbol{}, extensible, desc, current)
 }
 
+// ValidateAndApplyPropertyDescriptor is pretty complicated and should be simplified and/or
+// refactored into multiple sub-functions (TODO:).
+// ValidateAndApplyPropertyDescriptor is specified in 9.1.6.3.
 func (o *Object) ValidateAndApplyPropertyDescriptor(p StringOrSymbol, extensible bool, desc, current *Property) Boolean {
 	// if o != nil, p is not zero value
 	if current == nil {
@@ -271,10 +311,16 @@ func (o *Object) ValidateAndApplyPropertyDescriptor(p StringOrSymbol, extensible
 	return True
 }
 
+// HasProperty delegates to OrdinaryHasProperty.
+// HasProperty is specified in 9.1.7.
 func (o *Object) HasProperty(p StringOrSymbol) Boolean {
 	return o.OrdinaryHasProperty(p)
 }
 
+// OrdinaryHasProperty is used to determine whether an object
+// or any object in its prototype chain has a property with the
+// given name.
+// OrdinaryHasProperty is specified in 9.1.7.1.
 func (o *Object) OrdinaryHasProperty(p StringOrSymbol) Boolean {
 	if o.GetOwnProperty(p) != nil {
 		return True
@@ -288,10 +334,23 @@ func (o *Object) OrdinaryHasProperty(p StringOrSymbol) Boolean {
 	return False
 }
 
+// Get delegates to OrdinaryGet.
+// Get is specified in 9.1.8.
 func (o *Object) Get(p StringOrSymbol, receiver Value) (Value, errors.Error) {
 	return o.OrdinaryGet(p, receiver)
 }
 
+// OrdinaryGet returns the value of the property with the given name.
+// If the property is an own property of this object, its value is returned.
+// If this object does not have a property with the given name, its prototype
+// chain will be checked.
+//
+// If the found property is a data property descriptor, its value is returned.
+//
+// If the found property is an accessor property descriptor, the value returned
+// by its [[Get]] method is returned.
+//
+// If no property with the given name could be found, Undefined is returned.
 func (o *Object) OrdinaryGet(p StringOrSymbol, receiver Value) (Value, errors.Error) {
 	desc := o.GetOwnProperty(p)
 	if desc == nil {
@@ -312,22 +371,30 @@ func (o *Object) OrdinaryGet(p StringOrSymbol, receiver Value) (Value, errors.Er
 	return Undefined, nil
 }
 
+// Set delegates to OrdinarySet.
+// Set is specified in 9.1.9.
 func (o *Object) Set(p StringOrSymbol, v, receiver Value) (Boolean, errors.Error) {
 	return o.OrdinarySet(p, v, receiver)
 }
 
+// OrdinarySet is a wrapper around OrdinarySetWithOwnDescriptor, which will
+// resolve p to an own property of the object.
+// OrdinarySet is specified in 9.1.9.1.
 func (o *Object) OrdinarySet(p StringOrSymbol, v, receiver Value) (Boolean, errors.Error) {
 	return o.OrdinarySetWithOwnDescriptor(p, v, receiver, o.GetOwnProperty(p))
 }
 
+// OrdinarySetWithOwnDescriptor is pretty complicated and should be simplified and/or
+// refactored into multiple sub-functions (TODO:).
+// OrdinarySetWithOwnDescriptor is specified in 9.1.9.2.
 func (o *Object) OrdinarySetWithOwnDescriptor(p StringOrSymbol, v, receiver Value, ownDesc *Property) (Boolean, errors.Error) {
 	if ownDesc == nil {
 		parent := o.GetPrototypeOf()
 		if parent != Null {
 			return parent.(*Object).Set(p, v, receiver)
-		} else {
-			ownDesc = NewDataProperty(Undefined, True, True, True)
 		}
+
+		ownDesc = NewDataProperty(Undefined, True, True, True)
 	}
 
 	if ownDesc.IsDataDescriptor() {
@@ -353,9 +420,9 @@ func (o *Object) OrdinarySetWithOwnDescriptor(p StringOrSymbol, v, receiver Valu
 			valueDesc := NewProperty()
 			valueDesc.SetField(FieldNameValue, v)
 			return receiverObj.DefineOwnProperty(p, valueDesc), nil
-		} else {
-			return CreateDataProperty(receiverObj, p, v), nil
 		}
+
+		return CreateDataProperty(receiverObj, p, v), nil
 	}
 
 	// assert: ownDesc.IsAccessorDescriptor is true
@@ -370,10 +437,15 @@ func (o *Object) OrdinarySetWithOwnDescriptor(p StringOrSymbol, v, receiver Valu
 	return False, nil
 }
 
+// Delete delegates to OrdinaryDelete.
+// Delete is specified in 9.1.10.
 func (o *Object) Delete(p StringOrSymbol) Boolean {
 	return o.OrdinaryDelete(p)
 }
 
+// OrdinaryDelete removes a property with the name p
+// from the object.
+// OrdinaryDelete is specified in 9.1.10.1.
 func (o *Object) OrdinaryDelete(p StringOrSymbol) Boolean {
 	desc := o.GetOwnProperty(p)
 	if desc == nil {
@@ -388,10 +460,19 @@ func (o *Object) OrdinaryDelete(p StringOrSymbol) Boolean {
 	return False
 }
 
+// OwnPropertyKeys delegates to OrdinaryOwnPropertyKeys.
+// OwnPropertyKeys is specified in 9.1.11.
 func (o *Object) OwnPropertyKeys() []StringOrSymbol {
 	return o.OrdinaryOwnPropertyKeys()
 }
 
+// OrdinaryOwnPropertyKeys returns a list of names of the properties of this object.
+// That is, given an object with the properties 'A', 'B', and 'C', OrdinaryOwnPropertyKeys
+// will return ['A', 'B', 'C'].
+//
+// TODO: add comment on ordering and grouping of property names
+//
+// OrdinaryOwnPropertyKeys is specified in 9.1.11.1.
 func (o *Object) OrdinaryOwnPropertyKeys() []StringOrSymbol {
 	keys := []StringOrSymbol{}
 	secs := make(map[int][]StringOrSymbol)
@@ -401,7 +482,7 @@ func (o *Object) OrdinaryOwnPropertyKeys() []StringOrSymbol {
 		symbolIndex
 	)
 
-	for k, _ := range o.fields {
+	for k := range o.fields {
 		if n, err := strconv.ParseInt(k.String().Value().(string), 10, 64); err == nil && n >= 0 {
 			// k is an integer index
 			secs[integerIndex] = append(secs[integerIndex], k)
