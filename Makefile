@@ -1,33 +1,38 @@
+GOCMD=go
+GOMODCMD=$(GOCMD) mod
+GOTESTCMD=$(GOCMD) test
 GOPATH=$(shell pwd)/vendor:$(shell pwd)
 GOBIN=$(shell pwd)/bin
 GOFILES=./...
 GOENTRYPOINT=./cmd
 GONAME=$(shell basename "$(PWD)")
+EXECUTABLE=$(GOBIN)/$(GONAME)
 PID=/tmp/go-$(GONAME).pid
 
 build:
 	@echo "Building $(GOENTRYPOINT) to ./bin"
-	@GOBIN=$(GOBIN) go build -o $(GOBIN)/$(GONAME) $(GOENTRYPOINT)
+	@GOBIN=$(GOBIN) $(GOCMD) build -o $(EXECUTABLE) $(GOENTRYPOINT)
 
 start: build
-	@$(GOBIN)/$(GONAME)
+	@$(EXECUTABLE)
 
 get:
-	@go mod download
+	@$(GOMODCMD) download
 
 run:
-	@go run $(GOENTRYPOINT)
+	@$(GOCMD) run $(GOENTRYPOINT)
 
 clean:
 	@echo "Cleaning"
-	@go clean $(GOFILES)
-	@go mod tidy
+	@rm $(EXECUTABLE)
+	@$(GOCMD) clean $(GOFILES)
+	@$(GOMODCMD) tidy
 
 test:
-	@go test $(GOFILES)
+	@$(GOTESTCMD) $(GOFILES)
 
 shorttest:
-	@go test -short $(GOFILES)
+	@$(GOTESTCMD) -short $(GOFILES)
 
 stest: shorttest
 
