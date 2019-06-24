@@ -40,12 +40,16 @@ func (t Type) String() string {
 	}
 }
 
+// EnsureTypeOneOf panics, if the type of the given value is not one of
+// the given ECMALanguage data types.
 func EnsureTypeOneOf(arg Value, ts ...Type) {
 	if !TypeIsOneOf(arg, ts...) {
 		panic(fmt.Errorf("Value's type must be one of %v, but was %v", ts, arg.Type()))
 	}
 }
 
+// TypeIsOneOf is used to determine whether the type of the given value
+// is one of the given ECMALanguage data types.
 func TypeIsOneOf(arg Value, ts ...Type) bool {
 	got := arg.Type()
 	for _, t := range ts {
