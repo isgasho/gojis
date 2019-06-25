@@ -6,7 +6,7 @@ go:
   - 1.11.x
   - 1.12.x
   - tip
-go_import_path: github.com/TimSatke/gojis
+go_import_path: github.com/gojisvm/gojis
 
 env:
   - GO111MODULE=on

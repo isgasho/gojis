@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strconv"
 
-	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
 )
 
 var _ Value = (*Object)(nil) // ensure that Object implements Value
