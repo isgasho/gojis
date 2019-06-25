@@ -2,7 +2,7 @@
 
 1. Fork the repository
 2. Make changes
-3. Open a Pull Request
+3. Open a Pull Request agains `develop`
 
 # Code requirements
 
@@ -12,6 +12,5 @@
   * If you think a test is incorrect, open an issue, stating why the test should be changed/removed
 * To be consistent, new objects are created with constructor methods (`foo := NewFoo()` instead of `foo := &Foo{...}`)
   * Within constructor functions, the keyword `new` shall be used (`f := new(Foo); f.x = y` instead of `f := &Foo{x: y}`)
-* The formatter to be used is `gopls`'s default formatter, **NOT** `gofmt`
-* Code should be [fail-fast](https://en.wikipedia.org/wiki/Fail-fast)
+* [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 * Readability > Performance (there **are** exceptions, but don't optimize prematurely)
