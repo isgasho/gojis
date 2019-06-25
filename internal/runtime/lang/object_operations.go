@@ -3,7 +3,7 @@ package lang
 import (
 	"fmt"
 
-	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
 )
 
 // Get retrieves the value of a specific property of an object.

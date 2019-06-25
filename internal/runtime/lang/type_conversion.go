@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/TimSatke/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
 )
 
 // ToPrimitive converts a Value to a primitive type according to 7.1.1 in

@@ -1,6 +1,6 @@
 package main
 
-import "github.com/TimSatke/gojis/pkg/vm"
+import "github.com/gojisvm/gojis/pkg/vm"
 
 func main() {
 	vm.Run()

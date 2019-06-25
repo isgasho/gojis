@@ -3,12 +3,12 @@ package agent
 import (
 	"fmt"
 
+	"github.com/gojisvm/gojis/internal/runtime/agent/job"
+	"github.com/gojisvm/gojis/internal/runtime/binding"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/lang"
+	"github.com/gojisvm/gojis/internal/runtime/realm"
 	"github.com/google/uuid"
-	"github.com/TimSatke/gojis/internal/runtime/agent/job"
-	"github.com/TimSatke/gojis/internal/runtime/binding"
-	"github.com/TimSatke/gojis/internal/runtime/errors"
-	"github.com/TimSatke/gojis/internal/runtime/lang"
-	"github.com/TimSatke/gojis/internal/runtime/realm"
 )
 
 type QueueKind uint8

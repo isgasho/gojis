@@ -1,8 +1,8 @@
 package job
 
 import (
-	"github.com/TimSatke/gojis/internal/runtime/lang"
-	"github.com/TimSatke/gojis/internal/runtime/realm"
+	"github.com/gojisvm/gojis/internal/runtime/lang"
+	"github.com/gojisvm/gojis/internal/runtime/realm"
 )
 
 type PendingJob struct {

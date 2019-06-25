@@ -1,8 +1,8 @@
 package runtime
 
 import (
-	"github.com/TimSatke/gojis/internal/parser"
 	"github.com/rs/zerolog"
+	"github.com/gojisvm/gojis/internal/parser"
 )
 
 // Runtime is an object that will evaluate

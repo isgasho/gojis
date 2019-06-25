@@ -1,4 +1,4 @@
-module github.com/TimSatke/gojis
+module github.com/gojisvm/gojis
 
 go 1.12
 

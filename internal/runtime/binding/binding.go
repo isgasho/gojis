@@ -1,6 +1,6 @@
 package binding
 
-import "github.com/TimSatke/gojis/internal/runtime/lang"
+import "github.com/gojisvm/gojis/internal/runtime/lang"
 
 // Binding represents a concept described throughout the specification,
 // especially in context with environment records.

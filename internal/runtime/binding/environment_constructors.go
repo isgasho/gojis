@@ -1,6 +1,6 @@
 package binding
 
-import "github.com/TimSatke/gojis/internal/runtime/lang"
+import "github.com/gojisvm/gojis/internal/runtime/lang"
 
 // GetIdentifierReference returns a named reference with n as the name.
 // If strict is true, the reference will be a strict reference.
