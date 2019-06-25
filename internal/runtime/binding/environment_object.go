@@ -1,8 +1,8 @@
 package binding
 
 import (
-	"github.com/TimSatke/gojis/internal/runtime/errors"
-	"github.com/TimSatke/gojis/internal/runtime/lang"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/lang"
 )
 
 var _ Environment = (*ObjectEnvironment)(nil)

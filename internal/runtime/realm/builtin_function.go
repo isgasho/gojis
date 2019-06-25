@@ -1,8 +1,8 @@
 package realm
 
 import (
-	"github.com/TimSatke/gojis/internal/runtime/errors"
-	"github.com/TimSatke/gojis/internal/runtime/lang"
+	"github.com/gojisvm/gojis/internal/runtime/errors"
+	"github.com/gojisvm/gojis/internal/runtime/lang"
 )
 
 func CreateBuiltinFunction(fn func(lang.Value, ...lang.Value) (lang.Value, errors.Error), realm *Realm, proto lang.Value, internalSlotsList ...lang.StringOrSymbol) {

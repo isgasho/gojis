@@ -2,7 +2,7 @@ package runtime
 
 import (
 	"github.com/rs/zerolog"
-	"github.com/TimSatke/gojis/internal/parser"
+	"github.com/gojisvm/gojis/internal/parser"
 )
 
 type Runtime struct {

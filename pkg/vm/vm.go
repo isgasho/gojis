@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/TimSatke/gojis/pkg/vm/cmd"
+	"github.com/gojisvm/gojis/pkg/vm/cmd"
 )
 
 func Run() {
