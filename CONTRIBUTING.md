@@ -7,7 +7,7 @@ Alternatively, you can
 
 1. Fork the repository
 2. Make changes
-3. Open a Pull Request agains `develop`
+3. Open a Pull Request against `develop`
 
 # Code requirements
 
