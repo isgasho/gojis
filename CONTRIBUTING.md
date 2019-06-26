@@ -1,5 +1,10 @@
 # How to contribute
 
+1. Create an issue where you tell me that you want to contribute (and what, Runtime, Parser or API, or combinations of them)
+2. I will add you to the repository and the respective team(s)
+
+Alternatively, you can
+
 1. Fork the repository
 2. Make changes
 3. Open a Pull Request agains `develop`
