@@ -129,10 +129,14 @@ func (e *DeclarativeEnvironment) SetMutableBinding(n lang.String, val lang.Value
 	return nil
 }
 
+// GetThisBinding is not supported for DeclarativeEnvironment.
+// It will panic.
 func (e *DeclarativeEnvironment) GetThisBinding() (lang.Value, errors.Error) {
-	panic("TODO")
+	panic("Not supported for DeclarativeEnvironment") // TODO: better abstraction of environments?
 }
 
+// GetBindingValue returns the value of its bound identifier whose name is the given name.
+// GetBindingValue is specified in 8.1.1.1.6.
 func (e *DeclarativeEnvironment) GetBindingValue(n lang.String, strict bool) (lang.Value, errors.Error) {
 	b := e.mustGetBinding(n)
 	if !b.IsInitialized() {
