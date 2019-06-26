@@ -9,12 +9,15 @@ import (
 
 var _ Environment = (*DeclarativeEnvironment)(nil)
 
+// DeclarativeEnvironment represents a declarative environment record
+// as described in 8.1.1.1.
 type DeclarativeEnvironment struct {
 	outer Environment
 
 	bindings map[string]*Binding
 }
 
+// Outer returns the outer environment of this declarative environment.
 func (e *DeclarativeEnvironment) Outer() Environment {
 	return e.outer
 }
@@ -32,6 +35,9 @@ func (e *DeclarativeEnvironment) deleteBinding(n lang.String) {
 	delete(e.bindings, n.Value().(string))
 }
 
+// mustGetBinding returns the binding with the given name.
+// This function panics if no binding could be found.
+// Only use this if you know what you are doing.
 func (e *DeclarativeEnvironment) mustGetBinding(n lang.String) *Binding {
 	val, ok := e.getBinding(n)
 	if !ok {
@@ -41,11 +47,19 @@ func (e *DeclarativeEnvironment) mustGetBinding(n lang.String) *Binding {
 	return val
 }
 
+// HasBinding determines whether the given name is an identifier bound
+// by the record.
+// HasBinding is specified in 8.1.1.1.1.
 func (e *DeclarativeEnvironment) HasBinding(n lang.String) bool {
 	_, ok := e.getBinding(n)
 	return ok
 }
 
+// CreateMutableBinding creates a new mutable binding for the name N that is uninitialized.
+// A binding must not already exist in this Environment Record for the given name.
+// If Boolean argument deletable is true the new binding can be deleted by a subsequent
+// DeleteBinding call.
+// CreateMutableBinding is specified in 8.1.1.1.2.
 func (e *DeclarativeEnvironment) CreateMutableBinding(n lang.String, deletable bool) errors.Error {
 	b := NewBinding(n)
 	b.deletable = deletable
@@ -55,6 +69,10 @@ func (e *DeclarativeEnvironment) CreateMutableBinding(n lang.String, deletable b
 	return nil
 }
 
+// CreateImmutableBinding creates a new immutable binding for the given name that is uninitialized.
+// A binding must not already exist in this Environment
+// Record with that name. If strict is true the new binding is marked as a strict binding.
+// CreateImmutableBinding is specified in 8.1.1.1.3.
 func (e *DeclarativeEnvironment) CreateImmutableBinding(n lang.String, strict bool) errors.Error {
 	b := NewBinding(n)
 	b.immutable = true
@@ -65,12 +83,23 @@ func (e *DeclarativeEnvironment) CreateImmutableBinding(n lang.String, strict bo
 	return nil
 }
 
+// InitializeBinding is used to set the bound value of the current binding of the environment
+// with the given name to the given value. An uninitialized binding for the given name must
+// already exist.
+// InitializeBinding is specified in 8.1.1.1.4.
 func (e *DeclarativeEnvironment) InitializeBinding(n lang.String, val lang.Value) errors.Error {
 	e.mustGetBinding(n).value = val
 
 	return nil
 }
 
+// SetMutableBinding attempts to change the bound value of the binding with the given name in this
+// environment to the given new value.
+// If the binding is an immutable binding AND strict is true,
+// a TypeError is raised.
+// If no binding with the given name exists AND strict is true, a ReferenceError is raised.
+// If the binding with the given name is not yet initialized, a ReferenceError is raised.
+// SetMutableBinding is specified in 8.1.1.1.5.
 func (e *DeclarativeEnvironment) SetMutableBinding(n lang.String, val lang.Value, strict bool) errors.Error {
 	if !e.HasBinding(n) {
 		if strict {
